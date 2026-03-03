@@ -90,7 +90,7 @@ export default function AlbumForm({ editData = null, onSaved }) {
           {editData ? "Edit Album" : "Add New Album"}
         </h2>
         <p className="text-sm text-gray-500">
-          Album cover will be uploaded to Cloudinary
+          Album cover will be uploaded to Database
         </p>
       </div>
 

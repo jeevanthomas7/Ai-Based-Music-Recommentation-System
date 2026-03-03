@@ -11,7 +11,6 @@ export async function postGoogleCredential(credential) {
   }
   return res.data;
 }
-
 export async function fetchMe() {
   const res = await API.get("/auth/me");
   return res.data;

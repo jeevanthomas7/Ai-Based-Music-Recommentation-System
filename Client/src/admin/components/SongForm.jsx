@@ -101,7 +101,7 @@ export default function SongForm({ editData = null, onSaved }) {
           {editData ? "Edit Song" : "Add New Song"}
         </h2>
         <p className="text-sm text-gray-500">
-          Audio and cover image will be uploaded to Cloudinary
+          Audio and cover image will be uploaded to  Database
         </p>
       </div>
 

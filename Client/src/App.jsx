@@ -10,8 +10,11 @@ import AdminDashboard from "./admin/AdminDashboard";
 import ProtectedAdminRoute from "./admin/ProtectedAdminRoute";
 import Favorites from "./pages/Favorites";
 import Playlists from "./pages/Playlists";
+import Profile from "./pages/Profile";
+import PaymentDetails from "./pages/PaymentDetails";
 
 import ProtectedRoute from "../routes/ProtectedRoute";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -25,24 +28,26 @@ function App() {
         }
       />
 
-      <Route
-        path="/favorites"
-        element={
-        
-            <Favorites />
-         
-        }
-      />
 
-      <Route
-        path="/playlists"
-        element={
-       
-            <Playlists />
-         
-        }
-      />
+<Route
+  path="/favorites"
+  element={
+    <ProtectedRoute>
+      <Favorites />
+    </ProtectedRoute>
+  }
+/>
 
+<Route
+  path="/playlists"
+  element={
+    <ProtectedRoute>
+      <Playlists />
+    </ProtectedRoute>
+  }
+/>
+
+      <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route
@@ -53,6 +58,24 @@ function App() {
           </ProtectedRoute>
         }
       />
+      
+<Route
+  path="/payments"
+  element={
+    <ProtectedRoute>
+      <PaymentDetails />
+    </ProtectedRoute>
+  }
+/>
+      
+<Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  }
+/>
 
       <Route
         path="/premium"

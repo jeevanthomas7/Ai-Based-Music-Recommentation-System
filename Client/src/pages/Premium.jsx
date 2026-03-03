@@ -3,7 +3,7 @@ import { createOrder, verifyPayment } from "../api/paymentService";
 import { useNavigate } from "react-router-dom";
 
 export default function Premium() {
-  const [loading, setLoading] = useState(false);
+  const [loadingPlan, setLoadingPlan] = useState(null);
   const [err, setErr] = useState("");
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ export default function Premium() {
   }
 
   async function handleBuy(plan) {
-    setLoading(true);
+    setLoadingPlan(plan);
     setErr("");
 
     try {
@@ -26,7 +26,6 @@ export default function Premium() {
 
       const amount = plan === "monthly" ? 99 : 249;
       const order = await createOrder(amount, plan);
-
       const user = JSON.parse(localStorage.getItem("dotin_user"));
 
       const options = {
@@ -36,7 +35,6 @@ export default function Premium() {
         name: "Dot-In Premium",
         description: "Unlimited music streaming",
         order_id: order.orderId,
-
         handler: async (res) => {
           const data = await verifyPayment({
             razorpay_order_id: res.razorpay_order_id,
@@ -54,66 +52,98 @@ export default function Premium() {
             navigate("/");
           }
         },
-
+        modal: {
+          ondismiss: () => setLoadingPlan(null)
+        },
         prefill: {
           name: user?.name,
           email: user?.email
         },
-
         theme: { color: "#10B981" }
       };
 
       new window.Razorpay(options).open();
     } catch (e) {
       setErr(e.message || "Payment failed");
-    } finally {
-      setLoading(false);
+      setLoadingPlan(null);
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 px-4 py-12">
-      <h1 className="text-3xl font-bold text-center mb-10">
-        Upgrade to Premium
-      </h1>
+    <div className="min-h-screen bg-gray-50 pt-24 pb-20 px-4">
+      <div className="max-w-6xl mx-auto">
 
-      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
-        {[
-          { plan: "monthly", price: 99, label: "Monthly" },
-          { plan: "yearly", price: 249, label: "Yearly" }
-        ].map(p => (
-          <div
-            key={p.plan}
-            className="rounded-3xl border bg-white shadow-sm p-8 flex flex-col"
-          >
-            <h2 className="text-xl font-semibold">{p.label} Plan</h2>
-            <p className="text-4xl font-bold mt-4">
-              ₹{p.price}
-              <span className="text-sm text-gray-500">
-                /{p.plan === "monthly" ? "month" : "year"}
-              </span>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-16">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-3">
+              Upgrade to Premium
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Enjoy unlimited streaming without ads.
             </p>
-
-            <ul className="mt-6 space-y-2 text-sm text-gray-600">
-              <li>✔ Ad-free listening</li>
-              <li>✔ Unlimited skips</li>
-              <li>✔ High quality audio</li>
-            </ul>
-
-            <button
-              disabled={loading}
-              onClick={() => handleBuy(p.plan)}
-              className="mt-8 py-3 rounded-xl bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition"
-            >
-              {loading ? "Processing…" : "Get Premium"}
-            </button>
           </div>
-        ))}
-      </div>
 
-      {err && (
-        <p className="text-center text-red-500 mt-6">{err}</p>
-      )}
+          <button
+            onClick={() => navigate("/")}
+            className="px-6 py-2.5 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-800 transition whitespace-nowrap"
+          >
+            Back to Home
+          </button>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2">
+
+          {[
+            { plan: "monthly", price: 99, label: "Monthly" },
+            { plan: "yearly", price: 249, label: "Yearly" }
+          ].map((p) => (
+            <div
+              key={p.plan}
+              className="relative bg-white rounded-2xl border shadow-sm p-8 md:p-10 flex flex-col hover:shadow-md transition"
+            >
+              {p.plan === "yearly" && (
+                <span className="absolute top-4 right-4 bg-emerald-500 text-white text-xs px-3 py-1 rounded-full">
+                  Best Value
+                </span>
+              )}
+
+              <h2 className="text-2xl font-semibold text-gray-900">
+                {p.label} Plan
+              </h2>
+
+              <div className="mt-6">
+                <span className="text-4xl md:text-5xl font-bold text-gray-900">
+                  ₹{p.price}
+                </span>
+                <span className="text-gray-500 ml-2">
+                  /{p.plan === "monthly" ? "month" : "year"}
+                </span>
+              </div>
+
+              <ul className="mt-8 space-y-3 text-gray-600 text-sm">
+                <li>✔ Ad-free listening</li>
+                <li>✔ Unlimited skips</li>
+                <li>✔ High quality audio</li>
+                <li>✔ Priority support</li>
+              </ul>
+
+              <button
+                disabled={loadingPlan === p.plan}
+                onClick={() => handleBuy(p.plan)}
+                className="mt-10 w-full py-3 rounded-lg bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition disabled:opacity-60"
+              >
+                {loadingPlan === p.plan ? "Processing…" : "Get Premium"}
+              </button>
+            </div>
+          ))}
+
+        </div>
+
+        {err && (
+          <p className="text-center text-red-500 mt-10">{err}</p>
+        )}
+
+      </div>
     </div>
   );
 }

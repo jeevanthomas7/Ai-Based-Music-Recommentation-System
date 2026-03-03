@@ -42,29 +42,36 @@ export const googleAuth = async (req, res) => {
 
     // use email as key, and always update role based on isAdmin
     const user = await User.findOneAndUpdate(
-      { email }, // find by email
-      {
-        name: payload.name,
-        email,
-        googleId: payload.sub,
-        avatar: payload.picture,
-        role: isAdmin ? "admin" : "user",
-      },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
+  { email },
+  {
+    name: payload.name,
+    email,
+    googleId: payload.sub,
+    avatar: payload.picture,
+    role: isAdmin ? "admin" : "user",
+  },
+  {
+    new: true,
+    upsert: true,
+    setDefaultsOnInsert: true,
+    select: "_id name email avatar role isPremium premiumPlan premiumExpiresAt"
+  }
+);
 
     const token = createToken(user);
-
-    return res.json({
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar,
-        role: user.role,
-      },
-    });
+return res.json({
+  token,
+  user: {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    role: user.role,
+    isPremium: user.isPremium || false,
+    premiumPlan: user.premiumPlan || null,
+    premiumExpiresAt: user.premiumExpiresAt || null,
+  },
+});
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "auth failed" });
@@ -80,22 +87,25 @@ export const logout = async (req, res) => {
   }
 };
 
-
 export const getMe = async (req, res) => {
   try {
-    const userId = req.user?.id
-    if (!userId) return res.status(401).json({ message: "Not authenticated" })
-    const user = await User.findById(userId).select("name email avatar role")
-    if (!user) return res.status(404).json({ message: "User not found" })
-    return res.json({
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      role: user.role
-    })
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    const user = await User.findById(userId).select(
+      "_id name email avatar role isPremium premiumPlan premiumExpiresAt"
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.json({ user });
+
   } catch (err) {
-    console.error(err)
-    return res.status(500).json({ message: "Failed to fetch user" })
+    console.error(err);
+    return res.status(500).json({ message: "Failed to fetch user" });
   }
-}
+};

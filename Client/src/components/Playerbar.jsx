@@ -216,12 +216,15 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-cyan-50">
-        <div className="h-20 px-4 flex items-center gap-4">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-cyan-50 ">
+        <div className="px-3 sm:px-4 py-2 sm:h-20 flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
 
-          <div className="hidden sm:flex items-center gap-3 w-[320px]">
-            <img src={current?.cover} className="w-14 h-14 rounded object-cover bg-gray-200" />
-            <div className="min-w-0">
+          <div className="flex items-center gap-3 w-full sm:w-[320px]">
+            <img
+              src={current?.cover}
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded object-cover bg-gray-200"
+            />
+            <div className="min-w-0 flex-1">
               <div className="text-sm font-semibold truncate">
                 {current?.title || "Not playing"}
               </div>
@@ -230,51 +233,44 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
               </div>
             </div>
 
-            <div className="relative group">
-              <FiHeart
-                onClick={toggleFavourite}
-                className={favourites[current?.id] ? "text-pink-500 cursor-pointer" : iconBase}
-              />
-              <span className="tooltip">Favourite</span>
-            </div>
-
-            <div className="relative group">
-              <FiPlus onClick={() => setShowAdd(true)} className={iconBase} />
-              <span className="tooltip">Add to playlist</span>
-            </div>
+            <FiHeart
+              onClick={toggleFavourite}
+              className={
+                favourites[current?.id]
+                  ? "text-pink-500 cursor-pointer"
+                  : iconBase
+              }
+            />
+            <FiPlus
+              onClick={() => setShowAdd(true)}
+              className={iconBase}
+            />
           </div>
 
-          <div className="flex-1 flex flex-col items-center">
-            <div className="flex items-center gap-4">
-              <div className="relative group">
-                <FiShuffle
-                  onClick={() => setShuffle(!shuffle)}
-                  className={shuffle ? "text-green-500 cursor-pointer" : iconBase}
-                />
-                <span className="tooltip">Shuffle Play</span>
-              </div>
-
+          <div className="w-full sm:flex-1 flex flex-col items-center">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <FiShuffle
+                onClick={() => setShuffle(!shuffle)}
+                className={shuffle ? "text-green-500 cursor-pointer" : iconBase}
+              />
               <FiSkipBack onClick={prev} className="cursor-pointer" />
 
               <button
                 onClick={togglePlay}
-                className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center"
+                className="w-9 h-9 sm:w-10 sm:h-10 bg-black text-white rounded-full flex items-center justify-center"
               >
                 {isPlaying ? <FiPause /> : <FiPlay />}
               </button>
 
               <FiSkipForward onClick={next} className="cursor-pointer" />
 
-              <div className="relative group">
-                <FiRepeat
-                  onClick={() => setLoop(!loop)}
-                  className={loop ? "text-green-500 cursor-pointer" : iconBase}
-                />
-                <span className="tooltip">Repeat</span>
-              </div>
+              <FiRepeat
+                onClick={() => setLoop(!loop)}
+                className={loop ? "text-green-500 cursor-pointer" : iconBase}
+              />
             </div>
 
-            <div className="flex items-center gap-2 w-full max-w-xl text-xs mt-1">
+            <div className="flex items-center gap-2 w-full max-w-full sm:max-w-xl text-xs mt-1">
               <span>{format(currentTime)}</span>
               <input
                 type="range"
@@ -291,12 +287,11 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center gap-3 w-[220px] justify-end">
-            <div className="relative group">
-              <FiList onClick={() => setShowQueue(true)} className={iconBase} />
-              <span className="tooltip">Queue</span>
-            </div>
-
+          <div className="flex items-center gap-3 w-full sm:w-[220px] justify-between sm:justify-end">
+            <FiList
+              onClick={() => setShowQueue(true)}
+              className={iconBase}
+            />
             <FiVolume2 />
             <input
               type="range"
@@ -305,13 +300,14 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
               step="0.01"
               value={volume}
               onChange={e => setVolume(e.target.value)}
+              className="w-20 sm:w-28"
             />
           </div>
         </div>
       </div>
 
       {showQueue && (
-        <div className="fixed right-4 bottom-24 z-50 w-80 bg-white rounded-xl shadow-lg border">
+        <div className="fixed right-2 left-2 sm:left-auto sm:right-4 bottom-24 z-50 w-auto sm:w-80 bg-white rounded-xl shadow-lg border">
           <div className="flex items-center justify-between p-3 border-b">
             <div className="font-semibold">Queue</div>
             <FiX className="cursor-pointer" onClick={() => setShowQueue(false)} />
@@ -329,10 +325,15 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
                   i === index ? "bg-gray-100" : "hover:bg-gray-50"
                 }`}
               >
-                <img src={s.cover} className="w-10 h-10 rounded object-cover bg-gray-200" />
+                <img
+                  src={s.cover}
+                  className="w-10 h-10 rounded object-cover bg-gray-200"
+                />
                 <div className="min-w-0">
                   <div className="text-sm truncate">{s.title}</div>
-                  <div className="text-xs text-gray-500 truncate">{s.artist}</div>
+                  <div className="text-xs text-gray-500 truncate">
+                    {s.artist}
+                  </div>
                 </div>
               </div>
             ))}
@@ -342,7 +343,7 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
 
       {showAdd && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-xl w-96 p-5">
+          <div className="bg-white rounded-xl w-[95%] sm:w-96 p-4 sm:p-5">
             <div className="flex justify-between mb-3">
               <div className="font-semibold">Add to playlist</div>
               <FiX className="cursor-pointer" onClick={() => setShowAdd(false)} />
@@ -355,7 +356,9 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
                 className="flex-1 border px-3 py-2 rounded text-sm"
                 placeholder="Create playlist"
               />
-              <button className="bg-black text-white px-3 rounded">Create</button>
+              <button className="bg-black text-white px-3 rounded">
+                Create
+              </button>
             </form>
 
             {playlists.map(pl => (
@@ -378,7 +381,9 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
           setCurrentTime(audioRef.current.currentTime);
           setDuration(audioRef.current.duration || 0);
           setProgress(
-            (audioRef.current.currentTime / audioRef.current.duration) * 100 || 0
+            (audioRef.current.currentTime /
+              audioRef.current.duration) *
+              100 || 0
           );
         }}
         onEnded={() => {
@@ -390,26 +395,6 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
           }
         }}
       />
-
-      <style>{`
-        .tooltip {
-          position: absolute;
-          top: -28px;
-          left: 50%;
-          transform: translateX(-50%);
-          font-size: 12px;
-          background: black;
-          color: white;
-          padding: 2px 6px;
-          border-radius: 4px;
-          opacity: 0;
-          pointer-events: none;
-          white-space: nowrap;
-        }
-        .group:hover .tooltip {
-          opacity: 1;
-        }
-      `}</style>
     </>
   );
 }
