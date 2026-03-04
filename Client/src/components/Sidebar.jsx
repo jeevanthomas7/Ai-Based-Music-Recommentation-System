@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { FiHeart, FiMusic, FiTrash2, FiX } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { FiHeart, FiMusic, FiTrash2, FiX, FiHome, FiCompass, FiInfo } from "react-icons/fi";
+import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api/api";
 
 function normalizeSong(s) {
@@ -30,6 +30,7 @@ function PlaylistPreview({ songs = [] }) {
       <img
         src={covers[0].coverUrl}
         className="w-10 h-10 rounded-md object-cover"
+        alt=""
       />
     );
   }
@@ -42,6 +43,7 @@ function PlaylistPreview({ songs = [] }) {
             key={i}
             src={s.coverUrl}
             className="w-1/2 h-full object-cover"
+            alt=""
           />
         ))}
       </div>
@@ -55,20 +57,21 @@ function PlaylistPreview({ songs = [] }) {
           key={i}
           src={s.coverUrl}
           className="w-full h-full object-cover"
+          alt=""
         />
       ))}
     </div>
   );
 }
 
-export default function Sidebar({ user, onPlay }) {
+export default function Sidebar({ user, onPlay, isOpen, onClose }) {
   const [favourites, setFavourites] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [openPlaylist, setOpenPlaylist] = useState(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [confirm, setConfirm] = useState(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const userId = user?.id;
 
   useEffect(() => {
@@ -92,13 +95,21 @@ export default function Sidebar({ user, onPlay }) {
   }, [userId]);
 
   async function loadFavourites() {
-    const res = await API.get(`/favorites/user/${userId}`);
-    setFavourites(res.data || []);
+    try {
+      const res = await API.get(`/favorites/user/${userId}`);
+      setFavourites(res.data || []);
+    } catch (err) {
+      console.error("Load favourites failed", err);
+    }
   }
 
   async function loadPlaylists() {
-    const res = await API.get(`/playlists/user/${userId}`);
-    setPlaylists(res.data || []);
+    try {
+      const res = await API.get(`/playlists/user/${userId}`);
+      setPlaylists(res.data || []);
+    } catch (err) {
+      console.error("Load playlists failed", err);
+    }
   }
 
   function askConfirm(message, action) {
@@ -114,206 +125,196 @@ export default function Sidebar({ user, onPlay }) {
     setConfirm(null);
   }
 
+  const go = (path) => {
+    navigate(path);
+    if (window.innerWidth < 768) onClose();
+  };
+
   const SidebarContent = (
-    <div className="h-full bg-[#f9f9fb] rounded-none md:rounded-2xl shadow-md border-r md:border border-gray-100 flex flex-col overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
-        <h2 className="text-lg font-bold text-gray-900">Your Library</h2>
-        <button className="md:hidden" onClick={() => setMobileOpen(false)}>
-          <FiX />
+    <div className="h-full bg-[#f9f9fb] border-r border-gray-100 flex flex-col overflow-hidden shadow-[4px_0_24px_0_rgba(0,0,0,0.06)] rounded-r-3xl">
+      {/* Header for mobile view */}
+      <div className="md:hidden px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-white">
+        <span className="font-extrabold text-xl text-gray-900 italic">DOT<span className="text-sky-600">IN</span></span>
+        <button onClick={onClose} className="p-2 rounded-xl bg-gray-50 text-gray-600 active:scale-95 transition-all">
+          <FiX size={20} />
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6 scrollbar-hide">
+        {/* Header Section */}
+        <div className="px-2 mb-2 flex items-center justify-between">
+          <h2 className="text-sm font-black text-gray-900 uppercase tracking-widest">Your Library</h2>
+          <div className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
+        </div>
 
-        <div className="bg-white rounded-xl border border-gray-100 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-800">
-              Favourites
-              <FiHeart className="text-pink-500" />
+        {/* Favourites Card */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="flex items-center justify-between px-1 mb-4">
+            <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+              <FiHeart className="text-pink-500" /> Favourites
             </div>
-            {favourites.length > 1 && (
-              <button
-                onClick={() => navigate("/favorites")}
-                className="text-xs text-blue-600 hover:underline"
-              >
-                View all
-              </button>
+            {favourites.length > 3 && (
+              <button onClick={() => navigate("/favorites")} className="text-[10px] font-bold text-sky-600 uppercase hover:text-sky-700 transition-colors">View All</button>
             )}
           </div>
 
           <div className="space-y-1">
-            {favourites.slice(-3).map(f => (
-              <div
-                key={f._id}
-                className="flex items-center justify-between px-2 py-1.5 rounded-md hover:bg-gray-100"
-              >
-                <div
-                  onClick={() => onPlay?.([normalizeSong(f.songId)], 0)}
-                  className="flex items-center gap-2 cursor-pointer min-w-0"
-                >
-                  <img
-                    src={f.songId?.coverUrl}
-                    className="w-7 h-6 rounded object-cover bg-gray-200"
-                  />
-                  <span className="truncate text-sm text-gray-700">
-                    {f.songId?.title}
-                  </span>
+            {favourites.length === 0 ? (
+              <div className="py-8 text-center">
+                <div className="w-10 h-10 rounded-full bg-pink-50 flex items-center justify-center mx-auto mb-2">
+                  <FiHeart className="text-pink-200" size={18} />
                 </div>
-
-                <FiTrash2
-                  onClick={() =>
-                    askConfirm(
-                      `Remove "${f.songId.title}" from favourites?`,
-                      async () => {
-                        await API.post("/favorites/remove", {
-                          userId,
-                          songId: f.songId._id
-                        });
-                        window.dispatchEvent(new Event("dotin_favourites_changed"));
-                      }
-                    )
-                  }
-                  className="text-gray-400 hover:text-red-500 cursor-pointer"
-                />
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">No favourites</p>
               </div>
-            ))}
+            ) : (
+              favourites.slice(-4).reverse().map(f => (
+                <div key={f._id} className="group flex items-center justify-between px-2 py-2 rounded-2xl hover:bg-gray-50 transition-all duration-300">
+                  <div onClick={() => onPlay?.([normalizeSong(f.songId)], 0)} className="flex items-center gap-3 cursor-pointer min-w-0">
+                    <img src={f.songId?.coverUrl} className="w-9 h-9 rounded-xl object-cover shadow-sm bg-gray-100" alt="" />
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-gray-900 truncate leading-tight group-hover:text-sky-600 transition-colors">{f.songId?.title}</div>
+                      <div className="text-[9px] text-gray-500 font-medium truncate leading-tight mt-0.5">{Array.isArray(f.songId?.artist) ? f.songId.artist.join(", ") : f.songId?.artist}</div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => askConfirm(`Remove "${f.songId.title}" from favourites?`, async () => {
+                      await API.post("/favorites/remove", { userId, songId: f.songId._id });
+                      window.dispatchEvent(new Event("dotin_favourites_changed"));
+                    })}
+                    className="p-1.5 opacity-0 group-hover:opacity-100 rounded-lg bg-red-50 text-red-400 hover:text-red-600 transition-all"
+                  >
+                    <FiTrash2 size={12} />
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-100 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-800">
-              Playlists
-             <FiMusic className="text-gray-500" />
+        {/* Playlists Card */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="flex items-center justify-between px-1 mb-4">
+            <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+              <FiMusic className="text-sky-500" /> Playlists
             </div>
-            {playlists.length > 1 && (
-              <button
-                onClick={() => navigate("/playlists")}
-                className="text-xs text-blue-600 hover:underline"
-              >
-                View all
-              </button>
+            {playlists.length > 3 && (
+              <button onClick={() => navigate("/playlists")} className="text-[10px] font-bold text-sky-600 uppercase hover:text-sky-700 transition-colors">View All</button>
             )}
           </div>
 
-          {playlists.slice(-3).map(pl => (
-            <div key={pl._id} className="mb-2">
-              <div
-                onClick={() =>
-                  setOpenPlaylist(openPlaylist === pl._id ? null : pl._id)
-                }
-                className="flex items-center justify-between px-2 py-1.5 rounded-md hover:bg-gray-100 cursor-pointer"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <PlaylistPreview songs={pl.songs} />
-                  <span className="truncate text-sm text-gray-700">
-                    {pl.name}
-                  </span>
-                </div>
-
-                <FiTrash2
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    askConfirm(
-                      `Delete playlist "${pl.name}"?`,
-                      async () => {
-                        await API.delete(`/playlists/${pl._id}`);
-                        window.dispatchEvent(new Event("dotin_playlists_changed"));
-                      }
-                    );
-                  }}
-                  className="text-gray-400 hover:text-red-500"
-                />
+          <div className="space-y-2">
+            {playlists.length === 0 ? (
+              <div className="py-8 text-center font-bold text-[10px] text-gray-300 uppercase tracking-widest">
+                No playlists created
               </div>
-
-              {openPlaylist === pl._id && (
-                <div className="ml-2 mt-1 space-y-1">
-                  {pl.songs.map((s, i) => (
-                    <div
-                      key={s._id}
-                      className="flex items-center justify-between px-2 py-1 rounded hover:bg-gray-100"
-                    >
-                      <div
-                        onClick={() =>
-                          onPlay?.(pl.songs.map(normalizeSong), i)
-                        }
-                        className="flex items-center gap-2 cursor-pointer min-w-0"
-                      >
-                        <img
-                          src={s.coverUrl}
-                          className="w-6 h-6 rounded object-cover bg-gray-200"
-                        />
-                        <span className="truncate text-xs text-gray-600">
-                          {s.title}
-                        </span>
+            ) : (
+              playlists.slice(-4).reverse().map(pl => (
+                <div key={pl._id} className="space-y-1">
+                  <div
+                    onClick={() => setOpenPlaylist(openPlaylist === pl._id ? null : pl._id)}
+                    className={`group flex items-center justify-between px-2 py-2.5 rounded-2xl transition-all duration-300 cursor-pointer ${openPlaylist === pl._id ? 'bg-sky-50/50 ring-1 ring-sky-100' : 'hover:bg-gray-50'
+                      }`}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <PlaylistPreview songs={pl.songs} />
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold text-gray-900 truncate">{pl.name}</div>
+                        <div className="text-[9px] text-gray-400 font-medium leading-tight">{pl.songs.length} tracks</div>
                       </div>
-
-                      <FiTrash2
-                        onClick={() =>
-                          askConfirm(
-                            `Remove "${s.title}" from playlist?`,
-                            async () => {
-                              await API.post("/playlists/remove-song", {
-                                playlistId: pl._id,
-                                songId: s._id
-                              });
-                              window.dispatchEvent(new Event("dotin_playlists_changed"));
-                            }
-                          )
-                        }
-                        className="text-gray-400 hover:text-red-500"
-                      />
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+                    <FiTrash2
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        askConfirm(`Delete playlist "${pl.name}"?`, async () => {
+                          await API.delete(`/playlists/${pl._id}`);
+                          window.dispatchEvent(new Event("dotin_playlists_changed"));
+                        });
+                      }}
+                      className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 transition-all"
+                      size={14}
+                    />
+                  </div>
 
+                  {openPlaylist === pl._id && (
+                    <div className="pl-4 mt-2 mb-4 space-y-1 border-l-2 border-sky-100 ml-5 animate-in slide-in-from-top-2 duration-300">
+                      {pl.songs.slice(0, 6).map((s, i) => (
+                        <div key={s._id} className="group flex items-center justify-between p-1.5 rounded-xl hover:bg-white hover:shadow-sm transition-all">
+                          <div
+                            onClick={() => onPlay?.(pl.songs.map(normalizeSong), i)}
+                            className="flex items-center gap-2 cursor-pointer min-w-0 flex-1"
+                          >
+                            <img src={s.coverUrl} className="w-6 h-6 rounded-lg object-cover shadow-xs" alt="" />
+                            <span className="truncate text-[10px] font-bold text-gray-600 group-hover:text-sky-600 transition-colors">
+                              {s.title}
+                            </span>
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              askConfirm(`Remove "${s.title}" from playlist?`, async () => {
+                                await API.post("/playlists/remove-song", { playlistId: pl._id, songId: s._id });
+                                window.dispatchEvent(new Event("dotin_playlists_changed"));
+                              });
+                            }}
+                            className="p-1 opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-500 transition-all"
+                          >
+                            <FiTrash2 size={10} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 
   return (
     <>
-      <aside className="fixed top-16 bottom-20 left-0 w-80 hidden md:block z-30">
+      {/* Desktop Sidebar */}
+      <aside className="fixed top-14 md:top-16 bottom-20 left-0 w-80 hidden md:block z-30 transition-all duration-500">
         {SidebarContent}
       </aside>
 
-      <button
-        onClick={() => setMobileOpen(true)}
-        className="fixed left-4 bottom-24 z-40 md:hidden bg-black text-white px-4 py-2 rounded-full shadow-lg"
+      {/* Mobile Sidebar (Drawer) */}
+      <div
+        className={`fixed inset-0 z-[100] md:hidden transition-all duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
       >
-        Library
-      </button>
+        <div
+          className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+          onClick={onClose}
+        />
+        <aside
+          className={`relative w-80 h-full bg-[#f9f9fb] shadow-2xl transition-transform duration-500 ${isOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+        >
+          {SidebarContent}
+        </aside>
+      </div>
 
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 md:hidden flex">
-          <div className="w-80 h-full">{SidebarContent}</div>
-          <div
-            className="flex-1 bg-black/30"
-            onClick={() => setMobileOpen(false)}
-          />
-        </div>
-      )}
-
+      {/* Delete Confirmation Modal */}
       {confirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-xl w-80 p-5">
-            <div className="text-sm font-medium text-gray-800 mb-4">
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white rounded-3xl w-[320px] p-6 shadow-2xl transform animate-in zoom-in duration-300">
+            <div className="text-base font-bold text-gray-900 mb-2">Are you sure?</div>
+            <div className="text-sm font-medium text-gray-500 mb-6 leading-relaxed">
               {confirm.message}
             </div>
-            <div className="flex justify-end gap-3">
+            <div className="flex gap-3">
               <button
                 onClick={confirmNo}
-                className="px-4 py-1 rounded text-sm bg-gray-200 hover:bg-gray-300"
+                className="flex-1 py-3 rounded-2xl text-sm font-bold bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmYes}
-                className="px-4 py-1 rounded text-sm bg-red-600 text-white hover:bg-red-700"
+                className="flex-1 py-3 rounded-2xl text-sm font-bold bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-100 transition-all"
               >
                 Delete
               </button>

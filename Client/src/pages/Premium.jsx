@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createOrder, verifyPayment } from "../api/paymentService";
 import { useNavigate } from "react-router-dom";
+import { FiCheck, FiZap, FiStar, FiArrowLeft, FiLoader } from "react-icons/fi";
 
 export default function Premium() {
   const [loadingPlan, setLoadingPlan] = useState(null);
@@ -32,8 +33,8 @@ export default function Premium() {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: order.amount,
         currency: "INR",
-        name: "Dot-In Premium",
-        description: "Unlimited music streaming",
+        name: "DOT IN",
+        description: `${plan.toUpperCase()} Premium Subscription`,
         order_id: order.orderId,
         handler: async (res) => {
           const data = await verifyPayment({
@@ -49,7 +50,7 @@ export default function Premium() {
             window.dispatchEvent(
               new CustomEvent("dotin_user_updated", { detail: data.user })
             );
-            navigate("/");
+            navigate("/profile");
           }
         },
         modal: {
@@ -59,90 +60,136 @@ export default function Premium() {
           name: user?.name,
           email: user?.email
         },
-        theme: { color: "#10B981" }
+        theme: { color: "#0ea5e9" }
       };
 
-      new window.Razorpay(options).open();
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
     } catch (e) {
       setErr(e.message || "Payment failed");
       setLoadingPlan(null);
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-20 px-4">
-      <div className="max-w-6xl mx-auto">
+  const plans = [
+    {
+      id: "monthly",
+      name: "Starter Pro",
+      price: 99,
+      period: "month",
+      desc: "Perfect for casual listeners",
+      features: ["Ad-free listening", "Unlimited Skips", "Standard Quality Audio", "Single Device"]
+    },
+    {
+      id: "yearly",
+      name: "Ultimate Yearly",
+      price: 249,
+      period: "year",
+      desc: "Best for music enthusiasts",
+      popular: true,
+      features: ["Ad-free listening", "Unlimited Skips", "Ultra-HD Audio", "Up to 3 Devices", "Priority Support", "Early Access to New AI Features"]
+    }
+  ];
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-16">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">
-              Upgrade to Premium
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900 pt-8 pb-32 px-6 overflow-hidden">
+      <div className="fixed top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-sky-100/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="fixed bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-emerald-100/30 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto relative">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
+          <div className="max-w-xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center text-white shadow-lg">
+                <FiStar size={16} />
+              </div>
+              <span className="text-[10px] font-extrabold text-sky-600 uppercase tracking-widest">Premium Membership</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-4">
+              Elevate Your <span className="bg-gradient-to-r from-sky-600 to-emerald-500 bg-clip-text text-transparent">Soundtrack</span>
             </h1>
-            <p className="text-gray-600 text-lg">
-              Enjoy unlimited streaming without ads.
-            </p>
+            <p className="text-gray-500 font-medium">Ad-free music, ultra-high quality audio, and exclusive AI features curated just for you.</p>
           </div>
 
           <button
             onClick={() => navigate("/")}
-            className="px-6 py-2.5 rounded-lg bg-black text-white text-sm font-medium hover:bg-gray-800 transition whitespace-nowrap"
+            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white border border-gray-100 text-gray-700 font-bold text-sm shadow-sm hover:shadow-md transition-all hover:scale-105"
           >
-            Back to Home
+            <FiArrowLeft /> Back home
           </button>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2">
-
-          {[
-            { plan: "monthly", price: 99, label: "Monthly" },
-            { plan: "yearly", price: 249, label: "Yearly" }
-          ].map((p) => (
+        <div className="grid md:grid-cols-2 gap-8 items-stretch">
+          {plans.map((p) => (
             <div
-              key={p.plan}
-              className="relative bg-white rounded-2xl border shadow-sm p-8 md:p-10 flex flex-col hover:shadow-md transition"
+              key={p.id}
+              className={`relative bg-white rounded-[2rem] p-8 border transition-all duration-500 hover:-translate-y-2 flex flex-col ${p.popular ? "border-sky-500 shadow-2xl shadow-sky-100" : "border-gray-100 shadow-xl shadow-gray-200/50"
+                }`}
             >
-              {p.plan === "yearly" && (
-                <span className="absolute top-4 right-4 bg-emerald-500 text-white text-xs px-3 py-1 rounded-full">
-                  Best Value
-                </span>
+              {p.popular && (
+                <div className="absolute -top-3 left-8 px-4 py-1.5 rounded-full bg-sky-500 text-white text-[10px] font-black tracking-widest uppercase shadow-lg">
+                  Most Popular
+                </div>
               )}
 
-              <h2 className="text-2xl font-semibold text-gray-900">
-                {p.label} Plan
-              </h2>
-
-              <div className="mt-6">
-                <span className="text-4xl md:text-5xl font-bold text-gray-900">
-                  ₹{p.price}
-                </span>
-                <span className="text-gray-500 ml-2">
-                  /{p.plan === "monthly" ? "month" : "year"}
-                </span>
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-xl font-black text-gray-900">{p.name}</h2>
+                  <p className="text-gray-400 font-bold text-[10px] uppercase tracking-wider">{p.desc}</p>
+                </div>
+                <div className={`p-3 rounded-2xl ${p.popular ? 'bg-sky-50 text-sky-500' : 'bg-gray-50 text-gray-400'}`}>
+                  {p.id === 'monthly' ? <FiZap size={24} /> : <FiStar size={24} />}
+                </div>
               </div>
 
-              <ul className="mt-8 space-y-3 text-gray-600 text-sm">
-                <li>✔ Ad-free listening</li>
-                <li>✔ Unlimited skips</li>
-                <li>✔ High quality audio</li>
-                <li>✔ Priority support</li>
-              </ul>
+              <div className="mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-100/50">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-xl font-bold text-gray-400">₹</span>
+                  <span className="text-5xl font-black text-gray-900 tabular-nums">{p.price}</span>
+                  <span className="text-gray-400 font-bold text-sm">/{p.period}</span>
+                </div>
+              </div>
+
+              <div className="space-y-4 mb-10 flex-grow">
+                {p.features.map(f => (
+                  <div key={f} className="flex items-center gap-3">
+                    <FiCheck size={16} className={p.popular ? 'text-sky-500' : 'text-emerald-500'} strokeWidth={4} />
+                    <span className="text-gray-600 font-bold text-xs">{f}</span>
+                  </div>
+                ))}
+              </div>
 
               <button
-                disabled={loadingPlan === p.plan}
-                onClick={() => handleBuy(p.plan)}
-                className="mt-10 w-full py-3 rounded-lg bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition disabled:opacity-60"
+                disabled={loadingPlan === p.id}
+                onClick={() => handleBuy(p.id)}
+                className={`w-full py-4 rounded-2xl text-sm font-black transition-all disabled:opacity-50 ${p.popular
+                  ? "bg-sky-500 text-white hover:bg-sky-600 shadow-lg shadow-sky-100"
+                  : "bg-gray-900 text-white hover:bg-black shadow-lg shadow-gray-100"
+                  }`}
               >
-                {loadingPlan === p.plan ? "Processing…" : "Get Premium"}
+                {loadingPlan === p.id ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <FiLoader className="animate-spin" /> Syncing...
+                  </span>
+                ) : (
+                  `Upgrade to ${p.id === 'monthly' ? 'Monthly' : 'Yearly'}`
+                )}
               </button>
             </div>
           ))}
-
         </div>
 
         {err && (
-          <p className="text-center text-red-500 mt-10">{err}</p>
+          <div className="mt-10 p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 text-center text-[10px] font-black uppercase tracking-widest animate-shake max-w-sm mx-auto">
+            {err}
+          </div>
         )}
 
+        <div className="mt-20 flex flex-col items-center">
+          <div className="flex items-center gap-4 grayscale opacity-30 hover:opacity-100 transition-all duration-700 mb-4 h-6">
+            <span className="text-[10px] font-extrabold text-gray-400 uppercase tracking-[0.2em]">Secure Checkout Powered by Razorpay</span>
+          </div>
+        </div>
       </div>
     </div>
   );

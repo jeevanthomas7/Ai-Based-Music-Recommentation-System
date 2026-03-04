@@ -216,92 +216,173 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-cyan-50 ">
-        <div className="px-3 sm:px-4 py-2 sm:h-20 flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-cyan-50 border-t border-cyan-100 shadow-[0_-4px_30px_rgba(0,0,0,0.05)]">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-1.5 md:py-2.5 flex flex-col md:flex-row items-center gap-4 md:gap-8 relative">
 
-          <div className="flex items-center gap-3 w-full sm:w-[320px]">
-            <img
-              src={current?.cover}
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded object-cover bg-gray-200"
-            />
+          {/* Tooltip Helper Component (Inline) */}
+          <style dangerouslySetInnerHTML={{
+            __html: `
+            .player-tooltip {
+              position: absolute;
+              bottom: 100%;
+              left: 50%;
+              transform: translateX(-50%) translateY(-8px);
+              padding: 4px 8px;
+              background: #0f172a;
+              color: white;
+              font-size: 10px;
+              font-weight: 700;
+              border-radius: 6px;
+              white-space: nowrap;
+              opacity: 0;
+              visibility: hidden;
+              transition: all 0.2s;
+              pointer-events: none;
+              z-index: 100;
+            }
+            .group:hover .player-tooltip {
+              opacity: 1;
+              visibility: visible;
+              transform: translateX(-50%) translateY(-4px);
+            }
+            .player-tooltip::after {
+              content: '';
+              position: absolute;
+              top: 100%;
+              left: 50%;
+              transform: translateX(-50%);
+              border: 4px solid transparent;
+              border-top-color: #0f172a;
+            }
+          `}} />
+
+          {/* Section 1: Info */}
+          <div className="flex items-center gap-3 w-full md:w-[320px]">
+            <div className="relative group">
+              <img
+                src={current?.cover}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-lg object-cover shadow-sm group-hover:scale-105 transition-transform duration-500 bg-gray-200"
+              />
+            </div>
             <div className="min-w-0 flex-1">
-              <div className="text-sm font-semibold truncate">
-                {current?.title || "Not playing"}
+              <div className="text-[13px] font-bold text-gray-900 truncate leading-tight">
+                {current?.title || "Silence is Golden"}
               </div>
-              <div className="text-xs text-gray-500 truncate">
-                {current?.artist}
+              <div className="text-[10px] font-semibold text-gray-500 truncate uppercase mt-0.5">
+                {current?.artist || "The AI Engine"}
               </div>
             </div>
 
-            <FiHeart
-              onClick={toggleFavourite}
-              className={
-                favourites[current?.id]
-                  ? "text-pink-500 cursor-pointer"
-                  : iconBase
-              }
-            />
-            <FiPlus
-              onClick={() => setShowAdd(true)}
-              className={iconBase}
-            />
+            <div className="flex items-center gap-2">
+              <div className="relative group">
+                <FiHeart
+                  onClick={toggleFavourite}
+                  className={`cursor-pointer transition-all hover:scale-110 active:scale-90 ${favourites[current?.id]
+                      ? "text-pink-500"
+                      : "text-gray-400 hover:text-gray-600"
+                    }`}
+                  size={18}
+                />
+                <span className="player-tooltip">{favourites[current?.id] ? "Remove" : "Favourite"}</span>
+              </div>
+
+              <div className="relative group">
+                <button
+                  onClick={() => setShowAdd(true)}
+                  className="w-7 h-7 rounded-full bg-white/50 flex items-center justify-center text-gray-400 hover:bg-sky-500 hover:text-white transition-all shadow-sm"
+                >
+                  <FiPlus size={14} />
+                </button>
+                <span className="player-tooltip">Add to Playlist</span>
+              </div>
+            </div>
           </div>
 
-          <div className="w-full sm:flex-1 flex flex-col items-center">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <FiShuffle
-                onClick={() => setShuffle(!shuffle)}
-                className={shuffle ? "text-green-500 cursor-pointer" : iconBase}
-              />
-              <FiSkipBack onClick={prev} className="cursor-pointer" />
+          {/* Section 2: Controls */}
+          <div className="w-full md:flex-1 flex flex-col items-center">
+            <div className="flex items-center gap-5">
+              <div className="relative group">
+                <FiShuffle
+                  onClick={() => setShuffle(!shuffle)}
+                  className={`cursor-pointer transition-all ${shuffle ? "text-sky-500" : "text-gray-400 hover:text-gray-600"}`}
+                  size={16}
+                />
+                <span className="player-tooltip">Shuffle</span>
+              </div>
 
-              <button
-                onClick={togglePlay}
-                className="w-9 h-9 sm:w-10 sm:h-10 bg-black text-white rounded-full flex items-center justify-center"
-              >
-                {isPlaying ? <FiPause /> : <FiPlay />}
-              </button>
+              <div className="relative group">
+                <FiSkipBack onClick={prev} className="cursor-pointer text-gray-900 hover:text-sky-500 transition-colors" size={18} />
+                <span className="player-tooltip">Previous</span>
+              </div>
 
-              <FiSkipForward onClick={next} className="cursor-pointer" />
+              <div className="relative group">
+                <button
+                  onClick={togglePlay}
+                  className="w-9 h-9 md:w-10 md:h-10 bg-gray-900 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all"
+                >
+                  {isPlaying ? <FiPause size={18} /> : <FiPlay size={18} className="ml-0.5" />}
+                </button>
+                <span className="player-tooltip">{isPlaying ? "Pause" : "Play"}</span>
+              </div>
 
-              <FiRepeat
-                onClick={() => setLoop(!loop)}
-                className={loop ? "text-green-500 cursor-pointer" : iconBase}
-              />
+              <div className="relative group">
+                <FiSkipForward onClick={next} className="cursor-pointer text-gray-900 hover:text-sky-500 transition-colors" size={18} />
+                <span className="player-tooltip">Next</span>
+              </div>
+
+              <div className="relative group">
+                <FiRepeat
+                  onClick={() => setLoop(!loop)}
+                  className={`cursor-pointer transition-all ${loop ? "text-sky-500" : "text-gray-400 hover:text-gray-600"}`}
+                  size={16}
+                />
+                <span className="player-tooltip">Repeat</span>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 w-full max-w-full sm:max-w-xl text-xs mt-1">
-              <span>{format(currentTime)}</span>
+            <div className="flex items-center gap-3 w-full max-w-xl mt-1.5 group/progress">
+              <span className="text-[10px] font-bold text-gray-500 tabular-nums w-8">{format(currentTime)}</span>
+              <div className="flex-1 relative h-4 flex items-center cursor-pointer">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={progress}
+                  onChange={e =>
+                  (audioRef.current.currentTime =
+                    duration * (e.target.value / 100))
+                  }
+                  className="absolute inset-0 w-full h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-sky-500 group-hover/progress:h-1.5 transition-all"
+                />
+              </div>
+              <span className="text-[10px] font-bold text-gray-500 tabular-nums w-8">{format(duration)}</span>
+            </div>
+          </div>
+
+          {/* Section 3: Settings */}
+          <div className="hidden md:flex items-center gap-5 w-[220px] justify-end">
+            <div className="relative group">
+              <button
+                onClick={() => setShowQueue(true)}
+                className="p-1.5 rounded-lg text-gray-400 hover:bg-white/50 hover:text-gray-900 transition-all"
+              >
+                <FiList size={18} />
+              </button>
+              <span className="player-tooltip">Queue</span>
+            </div>
+
+            <div className="flex items-center gap-3 group/vol">
+              <FiVolume2 className="text-gray-400 group-hover/vol:text-sky-500 transition-colors" size={16} />
               <input
                 type="range"
                 min="0"
-                max="100"
-                value={progress}
-                onChange={e =>
-                  (audioRef.current.currentTime =
-                    duration * (e.target.value / 100))
-                }
-                className="flex-1"
+                max="1"
+                step="0.01"
+                value={volume}
+                onChange={e => setVolume(e.target.value)}
+                className="w-20 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-gray-900"
               />
-              <span>{format(duration)}</span>
             </div>
-          </div>
-
-          <div className="flex items-center gap-3 w-full sm:w-[220px] justify-between sm:justify-end">
-            <FiList
-              onClick={() => setShowQueue(true)}
-              className={iconBase}
-            />
-            <FiVolume2 />
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={e => setVolume(e.target.value)}
-              className="w-20 sm:w-28"
-            />
           </div>
         </div>
       </div>
@@ -321,9 +402,8 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
                   setIndex(i);
                   setShowQueue(false);
                 }}
-                className={`flex items-center gap-3 px-3 py-2 cursor-pointer ${
-                  i === index ? "bg-gray-100" : "hover:bg-gray-50"
-                }`}
+                className={`flex items-center gap-3 px-3 py-2 cursor-pointer ${i === index ? "bg-gray-100" : "hover:bg-gray-50"
+                  }`}
               >
                 <img
                   src={s.cover}
@@ -383,7 +463,7 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
           setProgress(
             (audioRef.current.currentTime /
               audioRef.current.duration) *
-              100 || 0
+            100 || 0
           );
         }}
         onEnded={() => {

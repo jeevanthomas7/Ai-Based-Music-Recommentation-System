@@ -4,33 +4,34 @@ import { FiPlay, FiSearch, FiX } from "react-icons/fi";
 
 function Card({ img, title, subtitle, onPlay }) {
   return (
-    <div className="w-[160px] sm:w-[176px] flex-shrink-0">
-      <div className="relative group rounded-xl overflow-hidden bg-[#0f0f0f]
-        shadow-[0_6px_18px_rgba(59,130,246,0.08)]
-        hover:shadow-[0_10px_30px_rgba(59,130,246,0.18)]
-        transition">
-        <div className="w-full aspect-square bg-gray-800">
-          {img ? (
-            <img src={img} alt={title} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900" />
-          )}
-        </div>
+    <div className="w-[160px] sm:w-[190px] flex-shrink-0 group cursor-pointer">
+      <div className="relative aspect-square rounded-3xl overflow-hidden bg-white shadow-xl shadow-gray-200/50 group-hover:shadow-2xl group-hover:shadow-sky-100 transition-all duration-500 group-hover:-translate-y-2">
+        {img ? (
+          <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+            <FiSearch className="text-gray-300" size={32} />
+          </div>
+        )}
+
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
 
         <button
-          onClick={onPlay}
-          className="absolute right-3 bottom-3 w-9 h-9 rounded-full
-          bg-white text-black flex items-center justify-center
-          opacity-0 group-hover:opacity-100 transition shadow-md"
+          onClick={(e) => { e.stopPropagation(); onPlay(); }}
+          className="absolute right-4 bottom-4 w-12 h-12 rounded-2xl
+          bg-white text-gray-900 flex items-center justify-center
+          opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-xl hover:bg-sky-500 hover:text-white"
         >
-          <FiPlay />
+          <FiPlay size={20} className="ml-0.5" />
         </button>
       </div>
 
-      <div className="mt-3">
-        <div className="text-sm font-semibold truncate">{title}</div>
+      <div className="mt-4 px-1">
+        <div className="text-[13px] font-black text-gray-900 truncate tracking-tight">{title}</div>
         {subtitle && (
-          <div className="text-xs text-gray-400 truncate">{subtitle}</div>
+          <div className="text-[10px] font-bold text-gray-400 truncate uppercase tracking-widest mt-0.5">
+            {subtitle}
+          </div>
         )}
       </div>
     </div>
@@ -142,57 +143,53 @@ export default function Home({ setQueue, setCurrentIndex }) {
     : "flex gap-4 overflow-x-auto pb-2 scrollbar-hide";
 
   return (
-    <div>
-      <div className="sticky top-16 z-30 bg-[#f7f7f8] border-b border-gray-200">
-        <div className="max-w-[1600px] mx-auto px-4 md:px-6">
-          <div className="flex flex-col md:flex-row items-center gap-4 py-3">
+    <div className="relative">
+      <div className="sticky top-[56px] md:top-[64px] z-30 mb-8">
+        <div className="bg-white border border-gray-100 px-5 py-2 rounded-full shadow-lg shadow-gray-200/40 flex flex-col md:flex-row items-center gap-3 transition-all duration-500">
 
-            <div className="flex gap-3 overflow-x-auto scrollbar-hide">
-              {["all", "featured", "albums"].map(f => (
-                <button
-                  key={f}
-                  onClick={() => setActiveFilter(f)}
-                  className={`px-5 py-2 rounded-full text-sm whitespace-nowrap transition ${
-                    activeFilter === f
-                      ? "bg-black text-white"
-                      : "bg-gray-200 hover:bg-gray-300"
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1">
+            {["all", "featured", "albums"].map(f => (
+              <button
+                key={f}
+                onClick={() => setActiveFilter(f)}
+                className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${activeFilter === f
+                  ? "bg-gray-900 text-white shadow-lg shadow-gray-200"
+                  : "bg-gray-50 text-gray-400 hover:bg-gray-100"
                   }`}
-                >
-                  {f === "all" ? "All" : f[0].toUpperCase() + f.slice(1)}
-                </button>
-              ))}
-            </div>
+              >
+                {f}
+              </button>
+            ))}
+          </div>
 
-            <div className="relative w-full md:flex-1">
-              <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-              <input
-                type="text"
-                placeholder="Search songs, albums..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-12 pr-12 py-3 rounded-full border border-gray-300 
-                focus:outline-none focus:ring-2 focus:ring-black text-sm bg-white"
-              />
-              {search && (
-                <button
-                  onClick={() => setSearch("")}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black text-lg"
-                >
-                  <FiX />
-                </button>
-              )}
-            </div>
-
+          <div className="relative w-full md:flex-1 group">
+            <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-sky-400 transition-colors" size={16} />
+            <input
+              type="text"
+              placeholder="Search by track, artist, or album..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-11 pr-11 py-2 rounded-full bg-gray-50 border border-gray-100
+              focus:bg-white focus:border-sky-100 focus:outline-none focus:ring-4 focus:ring-sky-50 transition-all text-xs font-bold text-gray-900 placeholder:text-gray-400"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors"
+              >
+                <FiX />
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="space-y-7 pb-28 px-4 md:px-6 pt-4">
+      <div className="space-y-7 pb-28 px-4 md:px-6 pt-2 md:pt-4">
 
         {(activeFilter === "all") && (
           <>
             <section>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4">Trending</h2>
+              <h2 className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase text-gray-900 mb-4">Trending</h2>
               <div className={sectionLayout}>
                 {loading ? (
                   <div className="text-gray-400">Loading...</div>
@@ -211,7 +208,7 @@ export default function Home({ setQueue, setCurrentIndex }) {
             </section>
 
             <section>
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4">Made for you</h2>
+              <h2 className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase text-gray-900 mb-4">Made for you</h2>
               <div className={sectionLayout}>
                 {filterTracks(madeForYou).map((s, i) => (
                   <Card
@@ -229,7 +226,7 @@ export default function Home({ setQueue, setCurrentIndex }) {
 
         {(activeFilter === "all" || activeFilter === "featured") && (
           <section>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4">Featured</h2>
+            <h2 className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase text-gray-900 mb-4">Featured</h2>
             <div className={sectionLayout}>
               {filterTracks(featured).map((s, i) => (
                 <Card
@@ -246,7 +243,7 @@ export default function Home({ setQueue, setCurrentIndex }) {
 
         {(activeFilter === "all" || activeFilter === "albums") && (
           <section>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4">Albums</h2>
+            <h2 className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase text-gray-900 mb-4">Albums</h2>
             <div className={sectionLayout}>
               {filterAlbums(albums).map(a => (
                 <Card

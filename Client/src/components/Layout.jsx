@@ -41,21 +41,25 @@ export default function Layout({ children }) {
     setCurrentIndex(index);
   }
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#f7f7f8] text-gray-900">
-      <Header initialUser={user} />
-      <Sidebar user={user} onPlay={handlePlay} />
+      <Header initialUser={user} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <Sidebar
+        user={user}
+        onPlay={handlePlay}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
 
-
-      <main className="pt-2  pb-20 ml-0 md:ml-80">
+      <main className="pt-2 pb-24 ml-0 md:ml-80 transition-all duration-500">
         <div className="max-w-[1600px] mx-auto px-6">
           {React.cloneElement(children, {
             setQueue: setPlaylist,
             setCurrentIndex
           })}
         </div>
-
-        
         <Footer />
       </main>
 
