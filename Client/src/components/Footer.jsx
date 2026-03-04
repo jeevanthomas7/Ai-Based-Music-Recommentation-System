@@ -29,11 +29,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full bg-white pt-10 pb-6 px-6 relative overflow-hidden border-t border-gray-100">
+    <footer className="w-full bg-white pt-12 pb-8 px-6 relative overflow-hidden border-t border-gray-100">
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-sky-500/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative text-gray-900">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 mb-1">
 
           <div className="lg:col-span-4 max-w-sm">
             <div className="flex items-center gap-2 mb-6 cursor-pointer group">
@@ -72,7 +72,7 @@ export default function Footer() {
           <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8">
             {footerLinks.map((section) => (
               <div key={section.title}>
-                <h4 className="text-gray-900 font-extrabold text-[10px] uppercase tracking-widest mb-6">{section.title}</h4>
+                <h4 className="text-gray-900 font-black italic text-[10px] uppercase tracking-widest mb-6">{section.title}</h4>
                 <ul className="space-y-3">
                   {section.links.map((link) => (
                     <li key={link.name}>
@@ -92,7 +92,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6">
             <span className="text-gray-400 text-[10px] font-black uppercase tracking-[0.2em]">
               © 2025 DOT IN LABORATORIES

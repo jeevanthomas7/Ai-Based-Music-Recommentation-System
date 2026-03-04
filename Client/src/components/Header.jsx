@@ -98,12 +98,12 @@ export default function Header({ initialUser = null, toggleSidebar }) {
     return (
       <button
         onClick={() => go(path)}
-        className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-300 ${active
+        className={`px-1.5 sm:px-4 py-1.5 rounded-full text-[8.5px] sm:text-xs font-black italic tracking-tighter uppercase transition-all duration-300 whitespace-nowrap ${active
           ? "bg-sky-50 text-sky-600 shadow-sm shadow-sky-100/50"
           : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
           }`}
       >
-        {label}
+        {label === "Explore AI" ? "Explore" : label}
       </button>
     );
   };
@@ -114,8 +114,8 @@ export default function Header({ initialUser = null, toggleSidebar }) {
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-2xl border-b border-gray-100 shadow-sm ${scrolled ? "shadow-md" : ""
           }`}
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-14 md:h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3 md:gap-4">
+        <div className="max-w-7xl mx-auto px-1.5 sm:px-4 md:px-6 h-12 md:h-16 flex items-center justify-between">
+          <div className="flex items-center gap-1 md:gap-4">
             <button
               onClick={toggleSidebar}
               className="md:hidden p-2 rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-100 active:scale-95 transition-all"
@@ -135,48 +135,48 @@ export default function Header({ initialUser = null, toggleSidebar }) {
                 </div>
               </div>
               <div className="flex flex-col -space-y-1">
-                <span className="font-black text-gray-900 text-lg tracking-tighter uppercase italic">
+                <span className="font-black text-gray-900 text-sm md:text-lg tracking-tighter uppercase italic leading-none">
                   DOT<span className="text-sky-600">IN</span>
                 </span>
-                <span className="text-[8px] font-bold text-sky-500 uppercase tracking-[0.2em] ml-0.5">Premium AI</span>
+                <span className="hidden sm:inline text-[8px] font-bold text-sky-500 uppercase tracking-[0.2em] ml-0.5">Premium AI</span>
               </div>
             </div>
           </div>
 
-          <nav className="flex items-center gap-1 md:gap-2 overflow-x-auto scrollbar-hide px-2">
+          <nav className="flex items-center gap-0 sm:gap-1 md:gap-2">
             {navItem("Home", "/")}
             {navItem("Explore AI", "/camera")}
             {navItem("About", "/about")}
           </nav>
 
-          <div className="flex items-center gap-3 md:gap-5">
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
             {!user?.isPremium && (
               <button
                 onClick={() => go("/premium")}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-500 text-white text-sm font-bold shadow-lg shadow-emerald-100 hover:bg-emerald-600 hover:scale-105 transition-all"
+                className="flex items-center gap-0.5 sm:gap-2 px-1.5 sm:px-4 md:px-5 py-1 sm:py-2 md:py-2.5 rounded-full bg-emerald-500 text-white text-[8.5px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase shadow-lg shadow-emerald-100 hover:bg-emerald-600 hover:scale-105 transition-all whitespace-nowrap"
               >
-                <FiZap className="fill-current" />
-                Go Premium
+                <FiZap className="fill-current hidden xs:block" size={10} />
+                <span className="xs:inline">Go Premium</span>
               </button>
             )}
 
             {!user ? (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
                 <button
                   onClick={() => go("/login")}
-                  className="text-sm font-bold text-gray-600 hover:text-gray-900"
+                  className="text-[8.5px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase text-gray-600 hover:text-gray-900 px-0.5 sm:px-2 whitespace-nowrap"
                 >
-                  Log in
+                  Log In
                 </button>
                 <button
                   onClick={() => go("/signup")}
-                  className="px-6 py-2.5 rounded-full bg-gray-900 text-white text-sm font-bold shadow-xl hover:bg-black transition-all"
+                  className="px-1.5 sm:px-4 md:px-6 py-1 sm:py-2 md:py-2.5 rounded-full bg-gray-900 text-white text-[8.5px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase shadow-xl hover:bg-black transition-all whitespace-nowrap"
                 >
-                  Get Started
+                  Join
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5 sm:gap-2 md:gap-4">
                 {user.isPremium && (
                   <div
                     ref={premiumRef}
@@ -184,9 +184,9 @@ export default function Header({ initialUser = null, toggleSidebar }) {
                   >
                     <button
                       onClick={() => setPremiumOpen(!premiumOpen)}
-                      className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold border border-emerald-100 hover:bg-emerald-100 transition-all"
+                      className="flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] sm:text-xs font-bold border border-emerald-100 hover:bg-emerald-100 transition-all whitespace-nowrap"
                     >
-                      <FiZap size={14} className="fill-current" />
+                      <FiZap size={12} className="fill-current" />
                       Premium
                     </button>
                     {premiumOpen && (

@@ -53,14 +53,16 @@ export default function Layout({ children }) {
         onClose={() => setIsSidebarOpen(false)}
       />
 
-      <main className="pt-2 pb-24 ml-0 md:ml-80 transition-all duration-500">
+      <main className="pt-0 ml-0 md:ml-80 transition-all duration-500">
         <div className="max-w-[1600px] mx-auto px-6">
-          {React.cloneElement(children, {
+          {React.isValidElement(children) ? React.cloneElement(children, {
             setQueue: setPlaylist,
             setCurrentIndex
-          })}
+          }) : children}
         </div>
         <Footer />
+        {/* Spacer to prevent PlayerBar from covering the footer content */}
+        <div className="h-24 md:h-28 bg-white" />
       </main>
 
       <PlayerBar

@@ -27,9 +27,9 @@ function Card({ img, title, subtitle, onPlay }) {
       </div>
 
       <div className="mt-4 px-1">
-        <div className="text-[13px] font-black text-gray-900 truncate tracking-tight">{title}</div>
+        <div className="text-[11px] sm:text-[13px] font-black italic text-gray-900 truncate tracking-tighter uppercase">{title}</div>
         {subtitle && (
-          <div className="text-[10px] font-bold text-gray-400 truncate uppercase tracking-widest mt-0.5">
+          <div className="text-[8px] sm:text-[9px] font-black italic text-gray-400 truncate uppercase tracking-widest mt-0.5">
             {subtitle}
           </div>
         )}
@@ -144,15 +144,15 @@ export default function Home({ setQueue, setCurrentIndex }) {
 
   return (
     <div className="relative">
-      <div className="sticky top-[56px] md:top-[64px] z-30 mb-8">
-        <div className="bg-white border border-gray-100 px-5 py-2 rounded-full shadow-lg shadow-gray-200/40 flex flex-col md:flex-row items-center gap-3 transition-all duration-500">
+      <div className="sticky top-[70px] md:top-[80px] z-30 mb-8 px-1">
+        <div className="bg-white border border-gray-100 px-4 py-3 rounded-2xl shadow-xl shadow-gray-200/60 flex items-center gap-3 transition-all duration-500">
 
           <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1">
             {["all", "featured", "albums"].map(f => (
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
-                className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all duration-300 ${activeFilter === f
+                className={`px-4 py-1.5 rounded-full text-[10px] font-black italic tracking-tighter uppercase whitespace-nowrap transition-all duration-300 ${activeFilter === f
                   ? "bg-gray-900 text-white shadow-lg shadow-gray-200"
                   : "bg-gray-50 text-gray-400 hover:bg-gray-100"
                   }`}
@@ -162,6 +162,9 @@ export default function Home({ setQueue, setCurrentIndex }) {
             ))}
           </div>
 
+          {/* Divider */}
+          <div className="w-px h-6 bg-gray-100 flex-shrink-0 hidden sm:block" />
+
           <div className="relative w-full md:flex-1 group">
             <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-sky-400 transition-colors" size={16} />
             <input
@@ -169,8 +172,8 @@ export default function Home({ setQueue, setCurrentIndex }) {
               placeholder="Search by track, artist, or album..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-11 py-2 rounded-full bg-gray-50 border border-gray-100
-              focus:bg-white focus:border-sky-100 focus:outline-none focus:ring-4 focus:ring-sky-50 transition-all text-xs font-bold text-gray-900 placeholder:text-gray-400"
+              className="w-full pl-11 pr-11 py-2.5 rounded-full bg-white border border-sky-100 shadow-md shadow-sky-100/40
+              focus:border-sky-300 focus:outline-none focus:ring-4 focus:ring-sky-50 transition-all text-xs font-bold text-gray-900 placeholder:text-gray-400 placeholder:font-medium"
             />
             {search && (
               <button
