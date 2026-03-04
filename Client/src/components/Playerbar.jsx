@@ -268,8 +268,13 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
               <div className="text-[13px] font-bold text-gray-900 truncate leading-tight">
                 {current?.title || "Silence is Golden"}
               </div>
-              <div className="text-[10px] font-semibold text-gray-500 truncate uppercase mt-0.5">
+              <div className="text-[10px] font-semibold text-gray-500 truncate uppercase mt-0.5 flex items-center gap-2">
                 {current?.artist || "The AI Engine"}
+                {user?.isPremium && (
+                  <span className="px-1.5 py-0.5 rounded-md bg-gradient-to-r from-sky-500 to-emerald-500 text-[7px] font-black text-white shadow-lg shadow-sky-100 flex-shrink-0 animate-pulse">
+                    ULTRA HD
+                  </span>
+                )}
               </div>
             </div>
 

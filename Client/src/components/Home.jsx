@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/api.js";
-import { FiPlay, FiSearch, FiX } from "react-icons/fi";
+import { FiPlay, FiSearch, FiX, FiZap } from "react-icons/fi";
 
 function Card({ img, title, subtitle, onPlay }) {
   return (
@@ -209,6 +209,39 @@ export default function Home({ setQueue, setCurrentIndex }) {
                 )}
               </div>
             </section>
+
+            {/* Premium Ad Banner (Only for non-premium) */}
+            {(() => {
+              try {
+                const u = JSON.parse(localStorage.getItem("dotin_user"));
+                if (u?.isPremium) return null;
+                return (
+                  <div className="relative group overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-sky-400/5 to-emerald-400/5 rounded-[2.5rem] -z-10" />
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-8 rounded-[2.5rem] border border-sky-100 bg-white shadow-xl shadow-sky-100/20">
+                      <div className="flex items-center gap-5">
+                        <div className="w-14 h-14 rounded-2xl bg-sky-500 flex items-center justify-center text-white shadow-lg">
+                          <FiZap size={24} className="fill-current" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-black italic tracking-tighter uppercase text-gray-900 leading-tight">Escape the noise. <span className="text-sky-600">Go Premium</span></h3>
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Ad-free listening • Exclusive AI • Lossless Audio</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => window.location.href = "/premium"}
+                        className="px-8 py-3.5 rounded-2xl bg-gray-900 text-white text-[11px] font-black italic tracking-widest uppercase hover:bg-black hover:scale-105 transition-all shadow-xl shadow-gray-200"
+                      >
+                        Upgrade Now
+                      </button>
+                      <div className="absolute top-4 right-6 text-[8px] font-black text-sky-300 uppercase tracking-widest pointer-events-none opacity-50">SPONSORED</div>
+                    </div>
+                  </div>
+                );
+              } catch {
+                return null;
+              }
+            })()}
 
             <section>
               <h2 className="text-xl sm:text-2xl font-black italic tracking-tighter uppercase text-gray-900 mb-4">Made for you</h2>
