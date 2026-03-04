@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../../api/api";
+import { FiMusic, FiImage, FiPlus, FiSave, FiX } from "react-icons/fi";
 
 const GENRES = [
   "Pop",
@@ -94,109 +95,144 @@ export default function SongForm({ editData = null, onSaved }) {
   return (
     <form
       onSubmit={submit}
-      className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm space-y-6 max-w-5xl w-full"
+      className="space-y-8 w-full"
     >
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">
-          {editData ? "Edit Song" : "Add New Song"}
+        <h2 className="text-2xl font-black italic tracking-tighter text-gray-900 uppercase">
+          {editData ? "Refine" : "Register"} <span className="text-sky-600">Track</span>
         </h2>
-        <p className="text-sm text-gray-500">
-          Audio and cover image will be uploaded to  Database
+        <p className="text-[10px] font-bold text-gray-400 mt-1 uppercase tracking-[0.2em]">
+          Sync high-fidelity audio and assets to registry
         </p>
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-600 px-4 py-2 rounded-lg text-sm">
+        <div className="bg-red-50 border border-red-100 text-red-600 px-5 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <input
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          placeholder="Song title *"
-          className="border rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-1.5">
+          <label className="text-[9px] font-black italic tracking-widest text-gray-400 uppercase ml-1">Track Title *</label>
+          <input
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="e.g. Moonlight Sonata"
+            className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-3.5 text-xs font-bold text-gray-900 placeholder:text-gray-300 focus:bg-white focus:ring-2 focus:ring-sky-100 outline-none transition-all"
+          />
+        </div>
 
-        <input
-          value={artist}
-          onChange={e => setArtist(e.target.value)}
-          placeholder="Artist"
-          className="border rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500"
-        />
+        <div className="space-y-1.5">
+          <label className="text-[9px] font-black italic tracking-widest text-gray-400 uppercase ml-1">Artist Name</label>
+          <input
+            value={artist}
+            onChange={e => setArtist(e.target.value)}
+            placeholder="e.g. Beethoven"
+            className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-3.5 text-xs font-bold text-gray-900 placeholder:text-gray-300 focus:bg-white focus:ring-2 focus:ring-sky-100 outline-none transition-all"
+          />
+        </div>
 
-        <select
-          value={albumId}
-          onChange={e => setAlbumId(e.target.value)}
-          className="border rounded-xl px-4 py-3 text-sm bg-white focus:ring-2 focus:ring-emerald-500"
-        >
-          <option value="">Select album *</option>
-          {albums.map(a => (
-            <option key={a._id} value={a._id}>
-              {a.title}
-            </option>
-          ))}
-        </select>
+        <div className="space-y-1.5">
+          <label className="text-[9px] font-black italic tracking-widest text-gray-400 uppercase ml-1">Collection *</label>
+          <select
+            value={albumId}
+            onChange={e => setAlbumId(e.target.value)}
+            className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-3.5 text-xs font-bold text-gray-900 focus:bg-white focus:ring-2 focus:ring-sky-100 outline-none transition-all appearance-none cursor-pointer"
+          >
+            <option value="">Select Album</option>
+            {albums.map(a => (
+              <option key={a._id} value={a._id}>
+                {a.title.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <select
-          value={genre}
-          onChange={e => setGenre(e.target.value)}
-          className="border rounded-xl px-4 py-3 text-sm bg-white focus:ring-2 focus:ring-emerald-500"
-        >
-          <option value="">Select genre</option>
-          {GENRES.map(g => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
-        </select>
+        <div className="space-y-1.5">
+          <label className="text-[9px] font-black italic tracking-widest text-gray-400 uppercase ml-1">Genre Class</label>
+          <select
+            value={genre}
+            onChange={e => setGenre(e.target.value)}
+            className="w-full bg-gray-50/50 border border-gray-100 rounded-2xl px-5 py-3.5 text-xs font-bold text-gray-900 focus:bg-white focus:ring-2 focus:ring-sky-100 outline-none transition-all appearance-none cursor-pointer"
+          >
+            <option value="">Select Genre</option>
+            {GENRES.map(g => (
+              <option key={g} value={g}>
+                {g.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="border rounded-xl px-4 py-3">
-          <label className="block text-xs text-gray-500 mb-1">
-            Audio File {editData ? "" : "*"}
-          </label>
-          <input
-            type="file"
-            accept="audio/*"
-            onChange={e => setAudioFile(e.target.files[0])}
-            className="text-sm w-full"
-          />
-          {audioFile && (
-            <div className="text-xs text-gray-600 mt-1 truncate">
-              {audioFile.name}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-gray-50/50 border border-gray-100 rounded-3xl p-5 group hover:bg-white hover:border-sky-100 transition-all duration-300">
+          <label className="text-[9px] font-black italic tracking-widest text-gray-400 uppercase mb-3 block">Audio Master {editData ? "" : "*"}</label>
+          <div className="relative">
+            <input
+              type="file"
+              accept="audio/*"
+              onChange={e => setAudioFile(e.target.files[0])}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            />
+            <div className="flex items-center gap-3 py-2">
+              <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-sky-600 shadow-sm group-hover:bg-sky-50 transition-colors">
+                <FiMusic size={18} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black italic uppercase tracking-tighter text-gray-900 truncate">
+                  {audioFile ? audioFile.name : "Select Audio File"}
+                </p>
+                <p className="text-[8px] font-bold text-gray-400 uppercase mt-0.5">MP3 / WAV / FLAC MAX 25MB</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-50/50 border border-gray-100 rounded-3xl p-5 group hover:bg-white hover:border-sky-100 transition-all duration-300">
+          <label className="text-[9px] font-black italic tracking-widest text-gray-400 uppercase mb-3 block">Visual Art</label>
+          <div className="relative">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={e => setImageFile(e.target.files[0])}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            />
+            <div className="flex items-center gap-3 py-2">
+              <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-emerald-600 shadow-sm group-hover:bg-emerald-50 transition-colors">
+                <FiImage size={18} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black italic uppercase tracking-tighter text-gray-900 truncate">
+                  {imageFile ? imageFile.name : "Select Image Asset"}
+                </p>
+                <p className="text-[8px] font-bold text-gray-400 uppercase mt-0.5">JPG / PNG / WEBP</p>
+              </div>
+            </div>
+          </div>
+          {imageFile && (
+            <div className="mt-4 relative inline-block">
+              <img
+                src={URL.createObjectURL(imageFile)}
+                className="w-20 h-20 rounded-2xl object-cover shadow-lg ring-4 ring-white"
+                alt="preview"
+              />
             </div>
           )}
         </div>
-
-        <div className="border rounded-xl px-4 py-3">
-          <label className="block text-xs text-gray-500 mb-1">
-            Cover Image
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={e => setImageFile(e.target.files[0])}
-            className="text-sm w-full"
-          />
-          {imageFile && (
-            <img
-              src={URL.createObjectURL(imageFile)}
-              className="w-24 h-24 mt-2 rounded-lg object-cover"
-              alt="preview"
-            />
-          )}
-        </div>
       </div>
 
-      <div className="flex justify-end">
+      <div className="pt-4 flex justify-end">
         <button
           disabled={loading}
-          className="px-6 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 disabled:opacity-60"
+          className="group relative px-10 py-4 bg-gray-900 text-white rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-200 hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-50"
         >
-          {loading ? "Uploading..." : editData ? "Update Song" : "Add Song"}
+          <div className="absolute inset-0 bg-gradient-to-r from-sky-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <span className="relative z-10 text-[11px] font-black italic tracking-widest uppercase">
+            {loading ? "Processing..." : editData ? "Sync Changes" : "Register Track"}
+          </span>
         </button>
       </div>
     </form>
