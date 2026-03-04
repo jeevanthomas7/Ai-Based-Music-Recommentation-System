@@ -278,8 +278,8 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
                 <FiHeart
                   onClick={toggleFavourite}
                   className={`cursor-pointer transition-all hover:scale-110 active:scale-90 ${favourites[current?.id]
-                      ? "text-pink-500"
-                      : "text-gray-400 hover:text-gray-600"
+                    ? "text-pink-500"
+                    : "text-gray-400 hover:text-gray-600"
                     }`}
                   size={18}
                 />
@@ -380,8 +380,11 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
                 step="0.01"
                 value={volume}
                 onChange={e => setVolume(e.target.value)}
-                className="w-20 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-gray-900"
+                className="w-20 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-gray-900 group-hover/vol:accent-sky-500 transition-all"
               />
+              <span className="text-[10px] font-bold text-gray-400 tabular-nums w-7 group-hover/vol:text-sky-600 transition-colors">
+                {Math.round(volume * 100)}%
+              </span>
             </div>
           </div>
         </div>

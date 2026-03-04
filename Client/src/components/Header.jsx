@@ -103,7 +103,9 @@ export default function Header({ initialUser = null, toggleSidebar }) {
           : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
           }`}
       >
-        {label === "Explore AI" ? "Explore" : label}
+        {label === "Explore AI" ? (
+          <>Explore <span className="text-sky-500">AI</span></>
+        ) : label}
       </button>
     );
   };
