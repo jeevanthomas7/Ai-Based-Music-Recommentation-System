@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import API from "../api/api.js";
 import { FiPlay, FiSearch, FiX, FiZap } from "react-icons/fi";
 
+
+const homeCache = {
+  trending: null,
+  featured: null,
+  madeForYou: null,
+  albums: null,
+};
+
 function Card({ img, title, subtitle, onPlay }) {
   return (
     <div className="w-[160px] sm:w-[190px] flex-shrink-0 group cursor-pointer">
@@ -57,15 +65,18 @@ function normalizeList(res, key) {
 }
 
 export default function Home({ setQueue, setCurrentIndex }) {
-  const [trending, setTrending] = useState([]);
-  const [featured, setFeatured] = useState([]);
-  const [madeForYou, setMadeForYou] = useState([]);
-  const [albums, setAlbums] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [trending, setTrending] = useState(homeCache.trending || []);
+  const [featured, setFeatured] = useState(homeCache.featured || []);
+  const [madeForYou, setMadeForYou] = useState(homeCache.madeForYou || []);
+  const [albums, setAlbums] = useState(homeCache.albums || []);
+  const [loading, setLoading] = useState(!homeCache.trending);
   const [activeFilter, setActiveFilter] = useState("all");
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    // If we already have data in cache, don't fetch again
+    if (homeCache.trending) return;
+
     let mounted = true;
 
     async function load() {
@@ -79,10 +90,21 @@ export default function Home({ setQueue, setCurrentIndex }) {
 
         if (!mounted) return;
 
-        setTrending(normalizeList(tRes.data, "songs").map(normalizeTrack));
-        setAlbums(normalizeList(aRes.data, "albums"));
-        setFeatured(normalizeList(fRes.data, "songs").map(normalizeTrack));
-        setMadeForYou(normalizeList(mRes.data, "songs").map(normalizeTrack));
+        const trend = normalizeList(tRes.data, "songs").map(normalizeTrack);
+        const alb = normalizeList(aRes.data, "albums");
+        const feat = normalizeList(fRes.data, "songs").map(normalizeTrack);
+        const made = normalizeList(mRes.data, "songs").map(normalizeTrack);
+
+        // Update homeCache
+        homeCache.trending = trend;
+        homeCache.albums = alb;
+        homeCache.featured = feat;
+        homeCache.madeForYou = made;
+
+        setTrending(trend);
+        setAlbums(alb);
+        setFeatured(feat);
+        setMadeForYou(made);
       } catch (e) {
         console.error(e);
       } finally {
@@ -139,7 +161,7 @@ export default function Home({ setQueue, setCurrentIndex }) {
     );
 
   const sectionLayout = search
-    ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
+    ? "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8"
     : "flex gap-4 overflow-x-auto pb-2 scrollbar-hide";
 
   return (
