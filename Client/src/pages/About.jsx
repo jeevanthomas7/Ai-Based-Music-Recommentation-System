@@ -23,122 +23,143 @@ export default function About() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 pt-8 pb-20 px-6 overflow-hidden">
-      <div className="fixed top-0 right-0 -mr-20 -mt-20 w-[500px] h-[500px] bg-sky-100/40 rounded-full blur-[120px] pointer-events-none" />
-      <div className="fixed bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] bg-emerald-100/40 rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-white text-gray-900 pt-8 pb-32 px-6 relative overflow-hidden font-sans">
+     
+      <div className="fixed top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-sky-200/30 rounded-full blur-[140px] pointer-events-none animate-pulse" />
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-100/20 rounded-full blur-[160px] pointer-events-none" />
+      <div className="fixed bottom-0 left-0 -ml-20 -mb-20 w-[500px] h-[500px] bg-emerald-100/30 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto relative">
-        <div className="flex flex-col lg:flex-row items-center gap-16 mb-24">
-          <div className="flex-1 text-center lg:text-left">
-            <button
-              onClick={() => navigate("/")}
-              className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 bg-white shadow-sm hover:bg-gray-50 transition-all text-sm font-bold text-gray-600 hover:scale-105"
-            >
-              <FiArrowLeft /> Back to Home
-            </button>
-            <div className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-[10px] font-extrabold uppercase tracking-[0.2em] mb-6">
+   
+      <div className="fixed top-6 right-8 z-50">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2.5 px-5 py-2.5 rounded-2xl bg-white/70 backdrop-blur-xl border border-gray-100 shadow-xl shadow-gray-200/40 hover:shadow-2xl hover:bg-white hover:scale-105 transition-all text-xs font-black italic tracking-widest uppercase text-gray-900 group"
+        >
+          <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" size={16} />
+          Back to Home
+        </button>
+      </div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Hero Section */}
+        <div className="flex flex-col lg:flex-row items-center gap-16 mb-32 mt-12 md:mt-20">
+          <div className="flex-1 text-center lg:text-left space-y-8">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-[10px] font-black italic uppercase tracking-[0.2em] border border-sky-100/50">
+              <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-ping" />
               The Future of Sound
             </div>
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-8 leading-[1.1] text-gray-900">
-              Building a Smarter <br />
-              <span className="bg-gradient-to-r from-sky-600 via-emerald-500 to-indigo-600 bg-clip-text text-transparent">
-                Music Experience
+
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9] text-gray-900">
+              Building a <br />
+              <span className="bg-gradient-to-r from-sky-600 via-emerald-500 to-indigo-600 bg-clip-text text-transparent italic">
+                Smarter Experience
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-500 max-w-2xl font-medium leading-relaxed mb-10">
+
+            <p className="text-lg md:text-xl text-gray-500 max-w-2xl font-bold leading-relaxed mb-10 opacity-80">
               DOT IN is a modern music streaming platform designed for
-              intelligent discovery and seamless listening. We combine
-              AI-powered recognition with clean design to deliver a fast,
-              immersive, and high-end experience.
+              intelligent discovery. We combine AI-powered recognition with
+              premium aesthetics to deliver a fast, immersive audio journey.
             </p>
-            <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
               <button
                 onClick={() => navigate("/premium")}
-                className="px-8 py-4 rounded-2xl bg-gray-900 text-white font-bold shadow-xl hover:bg-black hover:scale-105 transition-all flex items-center gap-3"
+                className="px-10 py-5 rounded-[2rem] bg-gray-900 text-white text-xs font-black italic tracking-widest uppercase shadow-2xl shadow-gray-400/40 hover:bg-black hover:scale-105 transition-all flex items-center gap-4 group"
               >
-                <FiZap className="fill-current text-yellow-400" /> Upgrade to Premium
+                <FiZap className="fill-current text-yellow-400 group-hover:scale-125 transition-transform" size={18} />
+                Go Premium Now
               </button>
             </div>
           </div>
 
+         
           <div className="flex-1 relative w-full max-w-md lg:max-w-none">
-            <div className="relative z-10 p-8 rounded-[3rem] bg-white border border-gray-100 shadow-2xl shadow-sky-100/50">
-              <div className="space-y-8">
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 border border-gray-100/50 group hover:bg-white hover:shadow-lg transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-sky-500 flex items-center justify-center text-white shadow-lg shadow-sky-200 group-hover:rotate-6 transition-transform">
-                      <FiCpu size={20} />
+            <div className="relative z-10 p-1 bg-white/40 backdrop-blur-3xl rounded-[3.5rem] border border-white/60 shadow-[0_32px_80px_rgba(0,0,0,0.08)]">
+              <div className="bg-white rounded-[3.2rem] p-8 md:p-10 space-y-10">
+                <div className="flex items-center justify-between p-5 rounded-3xl bg-gray-50/50 border border-gray-100 group hover:bg-white hover:shadow-2xl hover:shadow-sky-100 transition-all cursor-default">
+                  <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 rounded-2xl bg-sky-500 flex items-center justify-center text-white shadow-xl shadow-sky-200 group-hover:rotate-6 transition-transform">
+                      <FiCpu size={24} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900">AI Engine</h4>
-                      <p className="text-xs text-gray-500">v4.2.0 Active</p>
+                      <h4 className="font-black italic uppercase text-xs tracking-tighter text-gray-900">AI Logic Engine</h4>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Quantum Processing</p>
                     </div>
                   </div>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                </div>
-
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 border border-gray-100/50 group hover:bg-white hover:shadow-lg transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-white shadow-lg shadow-emerald-200 group-hover:rotate-6 transition-transform">
-                      <FiMusic size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900">Audio Quality</h4>
-                      <p className="text-xs text-gray-500">Ultra HD Streaming</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-1 h-3 bg-emerald-200 rounded-full" />)}
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-[10px] font-black text-emerald-600 italic tracking-tighter">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    v4.5 ACTIVE
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-gray-50 border border-gray-100/50 group hover:bg-white hover:shadow-lg transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-200 group-hover:rotate-6 transition-transform">
-                      <FiShield size={20} />
+                <div className="flex items-center justify-between p-5 rounded-3xl bg-gray-50/50 border border-gray-100 group hover:bg-white hover:shadow-2xl hover:shadow-emerald-100 transition-all cursor-default">
+                  <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center text-white shadow-xl shadow-emerald-200 group-hover:rotate-6 transition-transform">
+                      <FiMusic size={24} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900">Secure Access</h4>
-                      <p className="text-xs text-gray-500">RSA 256 Encryption</p>
+                      <h4 className="font-black italic uppercase text-xs tracking-tighter text-gray-900">Audio Fidelity</h4>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">32-bit Lossless</p>
                     </div>
                   </div>
-                  <span className="px-2 py-1 rounded bg-indigo-100 text-indigo-700 text-[10px] font-bold uppercase tracking-tighter">Verified</span>
+                  <div className="flex gap-1.5">
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <div key={i} className="w-1.5 h-4 bg-emerald-100 rounded-full group-hover:bg-emerald-500 transition-colors" style={{ transitionDelay: `${i * 100}ms` }} />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-5 rounded-3xl bg-gray-50/50 border border-gray-100 group hover:bg-white hover:shadow-2xl hover:shadow-indigo-100 transition-all cursor-default">
+                  <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-200 group-hover:rotate-6 transition-transform">
+                      <FiShield size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-black italic uppercase text-xs tracking-tighter text-gray-900">Encrypted Cloud</h4>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Decentralized Auth</p>
+                    </div>
+                  </div>
+                  <span className="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-[9px] font-black uppercase tracking-widest border border-indigo-100">SECURE</span>
                 </div>
               </div>
             </div>
-            {/* Decorative background element */}
-            <div className="absolute -inset-4 bg-gradient-to-tr from-sky-500/10 to-emerald-500/10 rounded-[3.5rem] blur-2xl -z-10" />
+            {/* Visual Flare */}
+            <div className="absolute -inset-10 bg-gradient-to-tr from-sky-500/10 via-emerald-500/10 to-indigo-500/10 rounded-[4rem] blur-[80px] -z-10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-sky-100/50 rounded-[4rem] rotate-6 -z-20 scale-110" />
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Feature Grid */}
+        <div className="grid md:grid-cols-3 gap-10">
           {features.map((f, i) => (
             <div
               key={i}
-              className="group p-10 rounded-[2.5rem] bg-white border border-gray-100 shadow-xl shadow-gray-200/40 hover:shadow-2xl hover:shadow-sky-100 hover:-translate-y-2 transition-all duration-500"
+              className="group p-12 rounded-[3.5rem] bg-white/60 backdrop-blur-xl border border-white shadow-2xl shadow-gray-200/50 hover:shadow-sky-100 hover:bg-white hover:-translate-y-3 transition-all duration-700"
             >
-              <div className="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 rounded-[1.5rem] bg-white shadow-lg flex items-center justify-center mb-10 group-hover:scale-125 transition-transform duration-700 group-hover:rotate-12 border border-gray-50">
                 {f.icon}
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">{f.title}</h3>
-              <p className="text-gray-500 text-sm font-medium leading-relaxed">
+              <h3 className="text-2xl font-black italic uppercase text-gray-900 mb-6 tracking-tighter">{f.title}</h3>
+              <p className="text-gray-500 text-sm font-bold leading-relaxed opacity-80">
                 {f.desc}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="mt-32 pt-20 border-t border-gray-200/50 flex flex-col md:flex-row items-center justify-between gap-10">
+        {/* Footer */}
+        <div className="mt-40 pt-20 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
           <div>
-            <h2 className="text-3xl font-black text-gray-900 mb-2 italic">DOT<span className="text-sky-600">IN</span></h2>
-            <p className="text-gray-500 font-medium">© 2026 Innovate Sound Lab. All rights reserved.</p>
+            <h2 className="text-4xl font-black text-gray-900 mb-4 italic tracking-tighter">DOT<span className="text-sky-600">IN</span></h2>
+            <p className="text-gray-400 font-bold text-xs uppercase tracking-widest">© 2026 Innovate Sound Lab. Design for Decades.</p>
           </div>
           <div className="flex gap-6">
-            <button className="w-12 h-12 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-sky-500 hover:shadow-lg transition-all">
-              <FiGithub size={20} />
+            <button className="w-14 h-14 rounded-[1.5rem] bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-sky-500 hover:shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:scale-110 transition-all duration-500">
+              <FiGithub size={24} />
             </button>
-            <button className="w-12 h-12 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-sky-500 hover:shadow-lg transition-all">
-              <FiTwitter size={20} />
+            <button className="w-14 h-14 rounded-[1.5rem] bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-sky-500 hover:shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:scale-110 transition-all duration-500">
+              <FiTwitter size={24} />
             </button>
           </div>
         </div>
