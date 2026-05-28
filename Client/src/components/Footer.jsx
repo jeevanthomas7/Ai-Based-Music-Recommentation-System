@@ -27,6 +27,7 @@ export default function Footer() {
       ]
     }
   ];
+  
 
   return (
     <footer className="w-full bg-white pt-12 pb-8 px-6 relative overflow-hidden border-t border-gray-100">
