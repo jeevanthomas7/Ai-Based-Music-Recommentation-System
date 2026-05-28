@@ -80,3 +80,26 @@ export const getMadeForYouSongs = async (req, res, next) => {
     next(error);
   }
 };
+
+export const searchSongs = async (req, res, next) => {
+  try {
+    const q = req.query.q || "";
+    if (!q.trim()) return res.json([]);
+
+    const regex = new RegExp(q.trim(), "i");
+    const songs = await Song.find({
+      $or: [
+        { title: regex },
+        { artist: regex },
+        { album: regex }
+      ]
+    })
+      .select("_id title artist album genre duration coverUrl audioUrl createdAt")
+      .sort({ createdAt: -1 })
+      .limit(30);
+
+    res.json(songs);
+  } catch (error) {
+    next(error);
+  }
+};

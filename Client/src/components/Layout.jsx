@@ -61,7 +61,7 @@ export default function Layout({ children }) {
           }) : children}
         </div>
         <Footer />
-        {/* Spacer to prevent PlayerBar from covering the footer content */}
+
         <div className="h-24 md:h-28 bg-white" />
       </main>
 

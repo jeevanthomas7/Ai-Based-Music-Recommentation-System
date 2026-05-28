@@ -149,6 +149,7 @@ export default function About() {
         </div>
 
         {/* Footer */}
+       
         <div className="mt-40 pt-20 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
           <div>
             <h2 className="text-4xl font-black text-gray-900 mb-4 italic tracking-tighter">DOT<span className="text-sky-600">IN</span></h2>

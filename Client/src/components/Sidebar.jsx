@@ -134,16 +134,56 @@ export default function Sidebar({ user, onPlay, isOpen, onClose }) {
     <div className="h-full bg-[#f9f9fb] border-r border-gray-100 flex flex-col overflow-hidden shadow-[4px_0_24px_0_rgba(0,0,0,0.06)] rounded-r-3xl">
       {/* Header for mobile view */}
       <div className="md:hidden px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-white">
-        <span className="font-extrabold text-xl text-gray-900 italic">DOT<span className="text-sky-600">IN</span></span>
+        <span className="font-extrabold text-xl text-gray-900 italic">DOT<span className="text-sky-600">-IN</span></span>
         <button onClick={onClose} className="p-2 rounded-xl bg-gray-50 text-gray-600 active:scale-95 transition-all">
           <FiX size={20} />
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6 scrollbar-hide">
+        {/* Navigation Section (Mobile Friendly) */}
+        <div className="space-y-1 lg:hidden">
+          <div className="px-2 mb-2">
+            <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Navigation</h2>
+          </div>
+          <button
+            onClick={() => go("/")}
+            className={`flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all ${
+              location.pathname === "/" 
+              ? "bg-sky-50 text-sky-600 shadow-sm shadow-sky-100/50" 
+              : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <FiHome size={18} className={location.pathname === "/" ? "text-sky-500" : "text-gray-400"} />
+            Home
+          </button>
+          <button
+            onClick={() => go("/camera")}
+            className={`flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all ${
+              location.pathname === "/camera" 
+              ? "bg-sky-50 text-sky-600 shadow-sm shadow-sky-100/50" 
+              : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <FiCompass size={18} className={location.pathname === "/camera" ? "text-sky-500" : "text-gray-400"} />
+            Explore AI
+          </button>
+          <button
+            onClick={() => go("/about")}
+            className={`flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all ${
+              location.pathname === "/about" 
+              ? "bg-sky-50 text-sky-600 shadow-sm shadow-sky-100/50" 
+              : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            <FiInfo size={18} className={location.pathname === "/about" ? "text-sky-500" : "text-gray-400"} />
+            About
+          </button>
+        </div>
+
         {/* Header Section */}
         <div className="px-2 mb-2 flex items-center justify-between">
-          <h2 className="text-sm font-black text-gray-900 uppercase tracking-widest">Your Library</h2>
+          <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Your Library</h2>
           <div className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
         </div>
 
@@ -297,7 +337,7 @@ export default function Sidebar({ user, onPlay, isOpen, onClose }) {
         </aside>
       </div>
 
-      {/* Delete Confirmation Modal */}
+    
       {confirm && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
           <div className="bg-white rounded-3xl w-[320px] p-6 shadow-2xl transform animate-in zoom-in duration-300">

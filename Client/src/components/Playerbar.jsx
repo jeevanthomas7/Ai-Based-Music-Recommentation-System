@@ -364,7 +364,7 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
             </div>
           </div>
 
-          {/* Section 3: Settings */}
+          
           <div className="hidden md:flex items-center gap-5 w-[220px] justify-end">
             <div className="relative group">
               <button

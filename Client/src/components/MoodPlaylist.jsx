@@ -35,11 +35,15 @@ export default function MoodPlaylist({ songs, onPlay }) {
                     alt={song.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white scale-75 group-hover:scale-100 transition-transform duration-500">
-                      <FiPlay className="fill-current" />
-                    </div>
-                  </div>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); onPlay(song); }}
+                    className="absolute bg-sky-500 text-white flex items-center justify-center shadow-xl transition-all duration-500 active:scale-95 z-10
+                    opacity-100 lg:opacity-0 lg:group-hover:opacity-100
+                    top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full
+                    lg:top-auto lg:left-auto lg:right-3 lg:bottom-3 lg:translate-x-0 lg:translate-y-0 lg:w-11 lg:h-11 lg:rounded-2xl"
+                  >
+                    <FiPlay className="fill-current" size={16} />
+                  </button>
                 </div>
 
                 <div className="relative">

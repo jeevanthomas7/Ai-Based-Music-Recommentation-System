@@ -107,7 +107,7 @@ export default function EmotionDetector({ onSongs }) {
         </div>
       </div>
 
-      <div className="relative aspect-video rounded-3xl bg-gray-900 overflow-hidden border-4 border-gray-50 shadow-inner group">
+      <div className="relative aspect-[4/5] md:aspect-video rounded-3xl bg-gray-900 overflow-hidden border-4 border-gray-50 shadow-inner group">
         <video
           ref={videoRef}
           autoPlay

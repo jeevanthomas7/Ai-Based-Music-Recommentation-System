@@ -12,7 +12,10 @@ const homeCache = {
 
 function Card({ img, title, subtitle, onPlay }) {
   return (
-    <div className="w-[160px] sm:w-[190px] flex-shrink-0 group cursor-pointer">
+    <div 
+      className="w-[160px] sm:w-[190px] flex-shrink-0 group cursor-pointer"
+      onClick={onPlay}
+    >
       <div className="relative aspect-square rounded-3xl overflow-hidden bg-white shadow-xl shadow-gray-200/50 group-hover:shadow-2xl group-hover:shadow-sky-100 transition-all duration-500 group-hover:-translate-y-2">
         {img ? (
           <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -26,11 +29,12 @@ function Card({ img, title, subtitle, onPlay }) {
 
         <button
           onClick={(e) => { e.stopPropagation(); onPlay(); }}
-          className="absolute right-4 bottom-4 w-12 h-12 rounded-2xl
-          bg-white text-gray-900 flex items-center justify-center
-          opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-xl hover:bg-sky-500 hover:text-white"
+          className="absolute bg-sky-500 text-white flex items-center justify-center shadow-xl transition-all duration-500 active:scale-95 z-10
+          opacity-100 lg:opacity-0 lg:group-hover:opacity-100
+          top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full
+          lg:top-auto lg:left-auto lg:right-4 lg:bottom-4 lg:translate-x-0 lg:translate-y-0 lg:w-12 lg:h-12 lg:rounded-2xl"
         >
-          <FiPlay size={20} className="ml-0.5" />
+          <FiPlay size={18} className="lg:ml-0.5" />
         </button>
       </div>
 
@@ -166,7 +170,7 @@ export default function Home({ setQueue, setCurrentIndex }) {
 
   return (
     <div className="relative">
-      <div className="sticky top-[70px] md:top-[80px] z-30 mb-8 px-1">
+      <div className="relative z-10 mb-4 md:mb-6 px-1 mt-2 md:mt-4">
         <div className="bg-white border border-gray-100 px-4 py-3 rounded-2xl shadow-xl shadow-gray-200/60 flex items-center gap-3 transition-all duration-500">
 
           <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1">
@@ -209,7 +213,7 @@ export default function Home({ setQueue, setCurrentIndex }) {
         </div>
       </div>
 
-      <div className="space-y-7 pb-28 px-4 md:px-6 pt-2 md:pt-4">
+      <div className="space-y-6 md:space-y-8 pb-10 md:pb-12 px-4 md:px-8 pt-0 md:pt-4">
 
         {(activeFilter === "all") && (
           <>

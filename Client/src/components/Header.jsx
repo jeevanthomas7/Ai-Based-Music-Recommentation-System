@@ -98,7 +98,7 @@ export default function Header({ initialUser = null, toggleSidebar }) {
     return (
       <button
         onClick={() => go(path)}
-        className={`px-1.5 sm:px-4 py-1.5 rounded-full text-[8.5px] sm:text-xs font-black italic tracking-tighter uppercase transition-all duration-300 whitespace-nowrap ${active
+        className={`px-4 py-2 rounded-full text-xs font-black italic tracking-tighter uppercase transition-all duration-300 whitespace-nowrap ${active
           ? "bg-sky-50 text-sky-600 shadow-sm shadow-sky-100/50"
           : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
           }`}
@@ -127,25 +127,25 @@ export default function Header({ initialUser = null, toggleSidebar }) {
 
             <div
               onClick={() => go("/")}
-              className="flex items-center gap-1.5 md:gap-2 cursor-pointer group"
+              className="flex items-center gap-2.5 md:gap-3 cursor-pointer group select-none"
             >
-              <div className="relative">
+              <div className="relative flex-shrink-0">
                 <div className="absolute inset-0 bg-sky-400 blur-lg opacity-20 group-hover:opacity-40 transition-opacity" />
-                <div className="relative w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-gradient-to-br from-gray-900 to-gray-700 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-all duration-500 overflow-hidden">
+                <div className="relative w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-gradient-to-br from-gray-900 to-gray-700 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-all duration-300 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-tr from-sky-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <FiZap size={18} strokeWidth={3} className="relative z-10 group-hover:animate-pulse" />
+                  <FiZap size={16} strokeWidth={3} className="relative z-10 group-hover:animate-pulse" />
                 </div>
               </div>
-              <div className="flex flex-col -space-y-1">
+              <div className="flex flex-col justify-center -space-y-1">
                 <span className="font-black text-gray-900 text-sm md:text-lg tracking-tighter uppercase italic leading-none">
-                  DOT<span className="text-sky-600">IN</span>
+                  DOT<span className="text-sky-600">-IN</span>
                 </span>
-                <span className="hidden sm:inline text-[8px] font-bold text-sky-500 uppercase tracking-[0.2em] ml-0.5">Premium AI</span>
+                <span className="hidden sm:inline text-[7px] font-bold text-sky-500 uppercase tracking-[0.2em] ml-0.5">Premium AI</span>
               </div>
             </div>
           </div>
 
-          <nav className="flex items-center gap-0 sm:gap-1 md:gap-2">
+          <nav className="hidden lg:flex items-center gap-1 md:gap-2">
             {navItem("Home", "/")}
             {navItem("Explore AI", "/camera")}
             {navItem("About", "/about")}
@@ -155,10 +155,10 @@ export default function Header({ initialUser = null, toggleSidebar }) {
             {!user?.isPremium && (
               <button
                 onClick={() => go("/premium")}
-                className="flex items-center gap-0.5 sm:gap-2 px-1.5 sm:px-4 md:px-5 py-1 sm:py-2 md:py-2.5 rounded-full bg-emerald-500 text-white text-[8.5px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase shadow-lg shadow-emerald-100 hover:bg-emerald-600 hover:scale-105 transition-all whitespace-nowrap"
+                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 rounded-full bg-emerald-500 text-white text-[10px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase shadow-lg shadow-emerald-100/50 hover:bg-emerald-600 hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
               >
-                <FiZap className="fill-current hidden xs:block" size={10} />
-                <span className="xs:inline">Go Premium</span>
+                <FiZap className="fill-current hidden xs:block" size={12} />
+                <span>Go Premium</span>
               </button>
             )}
 
@@ -166,13 +166,13 @@ export default function Header({ initialUser = null, toggleSidebar }) {
               <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
                 <button
                   onClick={() => go("/login")}
-                  className="text-[8.5px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase text-gray-600 hover:text-gray-900 px-0.5 sm:px-2 whitespace-nowrap"
+                  className="text-[10px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase text-gray-600 hover:text-gray-900 px-1 sm:px-2 whitespace-nowrap"
                 >
                   Log In
                 </button>
                 <button
                   onClick={() => go("/signup")}
-                  className="px-1.5 sm:px-4 md:px-6 py-1 sm:py-2 md:py-2.5 rounded-full bg-gray-900 text-white text-[8.5px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase shadow-xl hover:bg-black transition-all whitespace-nowrap"
+                  className="px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-2.5 rounded-full bg-gray-900 text-white text-[10px] sm:text-xs md:text-sm font-black italic tracking-tighter uppercase shadow-xl hover:bg-black transition-all whitespace-nowrap"
                 >
                   Join
                 </button>
