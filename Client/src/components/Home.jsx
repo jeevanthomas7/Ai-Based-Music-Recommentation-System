@@ -13,10 +13,10 @@ const homeCache = {
 function Card({ img, title, subtitle, onPlay }) {
   return (
     <div 
-      className="w-[160px] sm:w-[190px] flex-shrink-0 group cursor-pointer"
+      className="w-[105px] sm:w-[160px] md:w-[190px] flex-shrink-0 group cursor-pointer"
       onClick={onPlay}
     >
-      <div className="relative aspect-square rounded-3xl overflow-hidden bg-white shadow-xl shadow-gray-200/50 group-hover:shadow-2xl group-hover:shadow-sky-100 transition-all duration-500 group-hover:-translate-y-2">
+      <div className="relative aspect-square rounded-[1.25rem] sm:rounded-3xl lg:overflow-hidden bg-white shadow-xl shadow-gray-200/50 group-hover:shadow-2xl group-hover:shadow-sky-100 transition-all duration-500 group-hover:-translate-y-2">
         {img ? (
           <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
         ) : (
@@ -31,17 +31,17 @@ function Card({ img, title, subtitle, onPlay }) {
           onClick={(e) => { e.stopPropagation(); onPlay(); }}
           className="absolute bg-sky-500 text-white flex items-center justify-center shadow-xl transition-all duration-500 active:scale-95 z-10
           opacity-100 lg:opacity-0 lg:group-hover:opacity-100
-          top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full
+          top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full
           lg:top-auto lg:left-auto lg:right-4 lg:bottom-4 lg:translate-x-0 lg:translate-y-0 lg:w-12 lg:h-12 lg:rounded-2xl"
         >
-          <FiPlay size={18} className="lg:ml-0.5" />
+          <FiPlay className="w-3 h-3 sm:w-[18px] sm:h-[18px] lg:ml-0.5" />
         </button>
       </div>
 
-      <div className="mt-4 px-1">
-        <div className="text-[11px] sm:text-[13px] font-black italic text-gray-900 truncate tracking-tighter uppercase">{title}</div>
+      <div className="mt-2 sm:mt-4 px-1">
+        <div className="text-[10px] sm:text-[13px] font-black italic text-gray-900 truncate tracking-tighter uppercase">{title}</div>
         {subtitle && (
-          <div className="text-[8px] sm:text-[9px] font-black italic text-gray-400 truncate uppercase tracking-widest mt-0.5">
+          <div className="text-[7px] sm:text-[9px] font-black italic text-gray-400 truncate uppercase tracking-widest mt-0.5">
             {subtitle}
           </div>
         )}
@@ -169,8 +169,8 @@ export default function Home({ setQueue, setCurrentIndex }) {
     : "flex gap-4 overflow-x-auto pb-2 scrollbar-hide";
 
   return (
-    <div className="relative">
-      <div className="relative z-10 mb-4 md:mb-6 px-1 mt-2 md:mt-4">
+    <div className="relative overflow-visible md:overflow-hidden">
+      <div className="relative z-10 mb-4 md:mb-6 px-4 md:px-8 mt-2 md:mt-4">
         <div className="bg-white border border-gray-100 px-4 py-3 rounded-2xl shadow-xl shadow-gray-200/60 flex items-center gap-3 transition-all duration-500">
 
           <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1">

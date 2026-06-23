@@ -54,7 +54,7 @@ export default function Layout({ children }) {
       />
 
       <main className="pt-0 ml-0 md:ml-80 transition-all duration-500">
-        <div className="max-w-[1600px] mx-auto px-6">
+        <div className="max-w-[1600px] mx-auto md:px-6">
           {React.isValidElement(children) ? React.cloneElement(children, {
             setQueue: setPlaylist,
             setCurrentIndex
