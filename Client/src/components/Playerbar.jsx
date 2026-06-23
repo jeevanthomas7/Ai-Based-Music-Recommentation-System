@@ -300,6 +300,16 @@ export default function PlayerBar({ playlist = [], initialIndex = 0 }) {
                 </button>
                 <span className="player-tooltip">Add to Playlist</span>
               </div>
+
+              <div className="relative group md:hidden">
+                <button
+                  onClick={() => setShowQueue(true)}
+                  className="w-7 h-7 rounded-full bg-white/50 flex items-center justify-center text-gray-400 hover:bg-sky-500 hover:text-white transition-all shadow-sm"
+                >
+                  <FiList size={14} />
+                </button>
+                <span className="player-tooltip">Queue</span>
+              </div>
             </div>
           </div>
 
